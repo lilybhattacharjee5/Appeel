@@ -65,6 +65,8 @@ class SignupViewController: UIViewController {
         signupButton.layer.cornerRadius = borderRadius
         signupButton.titleLabel!.font = ColorScheme.pingFang24
         signupButton.setTitleColor(ColorScheme.black, for: .normal)
+        
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
     @IBAction func signUp(_ sender: Any) {

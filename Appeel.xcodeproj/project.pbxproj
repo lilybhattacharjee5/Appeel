@@ -21,6 +21,10 @@
 		70A405F021DF2E54001D280A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70A405EF21DF2E54001D280A /* Assets.xcassets */; };
 		70A405F321DF2E54001D280A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70A405F121DF2E54001D280A /* LaunchScreen.storyboard */; };
 		70A405FE21DFE964001D280A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A405FD21DFE964001D280A /* HomeViewController.swift */; };
+		70ADF65221E5FA57008F07A2 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70ADF65121E5FA57008F07A2 /* AddItemViewController.swift */; };
+		70ADF65421E5FBA8008F07A2 /* PantryItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70ADF65321E5FBA8008F07A2 /* PantryItemTableViewCell.swift */; };
+		70ADF65621E62C46008F07A2 /* SearchItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70ADF65521E62C46008F07A2 /* SearchItemViewController.swift */; };
+		70ADF65821E63DD1008F07A2 /* SearchItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70ADF65721E63DD1008F07A2 /* SearchItemTableViewCell.swift */; };
 		70CAEC1C21E1A14100FAA12A /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CAEC1B21E1A14100FAA12A /* Recipe.swift */; };
 		70CAEC2021E1FF5600FAA12A /* RecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CAEC1F21E1FF5600FAA12A /* RecipeTableViewCell.swift */; };
 		70DC443221E1411B006A5391 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DC443121E1411B006A5391 /* UserProfile.swift */; };
@@ -52,6 +56,10 @@
 		70A405F221DF2E54001D280A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		70A405F421DF2E54001D280A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70A405FD21DFE964001D280A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		70ADF65121E5FA57008F07A2 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
+		70ADF65321E5FBA8008F07A2 /* PantryItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryItemTableViewCell.swift; sourceTree = "<group>"; };
+		70ADF65521E62C46008F07A2 /* SearchItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemViewController.swift; sourceTree = "<group>"; };
+		70ADF65721E63DD1008F07A2 /* SearchItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemTableViewCell.swift; sourceTree = "<group>"; };
 		70CAEC1B21E1A14100FAA12A /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		70CAEC1F21E1FF5600FAA12A /* RecipeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewCell.swift; sourceTree = "<group>"; };
 		70DC443121E1411B006A5391 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -139,6 +147,8 @@
 			children = (
 				70CAEC1F21E1FF5600FAA12A /* RecipeTableViewCell.swift */,
 				7034AB3621E55BD50014EDD8 /* RecipeInfoTableViewCell.swift */,
+				70ADF65321E5FBA8008F07A2 /* PantryItemTableViewCell.swift */,
+				70ADF65721E63DD1008F07A2 /* SearchItemTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -159,6 +169,8 @@
 				7034AB3021E4806E0014EDD8 /* RecipeZoomViewController.swift */,
 				7034AB3221E559EB0014EDD8 /* GeneralSearchViewController.swift */,
 				7034AB3421E55A080014EDD8 /* PantrySearchViewController.swift */,
+				70ADF65121E5FA57008F07A2 /* AddItemViewController.swift */,
+				70ADF65521E62C46008F07A2 /* SearchItemViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -310,6 +322,8 @@
 				7034AB2D21E4576A0014EDD8 /* NutrientInfo.swift in Sources */,
 				70F3B08021DFF9AE00D8B062 /* AboutViewController.swift in Sources */,
 				7034AB3521E55A080014EDD8 /* PantrySearchViewController.swift in Sources */,
+				70ADF65621E62C46008F07A2 /* SearchItemViewController.swift in Sources */,
+				70ADF65821E63DD1008F07A2 /* SearchItemTableViewCell.swift in Sources */,
 				70F3B08421E06EA800D8B062 /* PageViewController.swift in Sources */,
 				70F3B07C21DFF98C00D8B062 /* LoginViewController.swift in Sources */,
 				7034AB2F21E457810014EDD8 /* Ingredient.swift in Sources */,
@@ -320,12 +334,14 @@
 				70DC443221E1411B006A5391 /* UserProfile.swift in Sources */,
 				70CAEC1C21E1A14100FAA12A /* Recipe.swift in Sources */,
 				70DC443621E1655A006A5391 /* VirtualPantryViewController.swift in Sources */,
+				70ADF65421E5FBA8008F07A2 /* PantryItemTableViewCell.swift in Sources */,
 				70F3B07E21DFF99A00D8B062 /* SignupViewController.swift in Sources */,
 				70A405E921DF2E52001D280A /* AppDelegate.swift in Sources */,
 				7034AB3121E4806E0014EDD8 /* RecipeZoomViewController.swift in Sources */,
 				70A405FE21DFE964001D280A /* HomeViewController.swift in Sources */,
 				7034AB3721E55BD50014EDD8 /* RecipeInfoTableViewCell.swift in Sources */,
 				70CAEC2021E1FF5600FAA12A /* RecipeTableViewCell.swift in Sources */,
+				70ADF65221E5FA57008F07A2 /* AddItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,7 +489,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KLZUVT7CN8;
 				INFOPLIST_FILE = Appeel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -491,7 +509,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KLZUVT7CN8;
 				INFOPLIST_FILE = Appeel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

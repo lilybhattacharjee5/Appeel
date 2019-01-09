@@ -113,6 +113,10 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         
         self.dietPicker.delegate = self
         self.dietPicker.dataSource = self
+        
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -140,6 +144,7 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "generalSearchResults" {
+//            let newSearch: SearchRecipesViewController = (segue.destination as! UINavigationController).topViewController as! SearchRecipesViewController
             let newSearch: SearchRecipesViewController = segue.destination as! SearchRecipesViewController
             
             let query: String = queryField.text ?? ""

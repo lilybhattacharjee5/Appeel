@@ -29,4 +29,5 @@ class ColorScheme {
     public static let green = UIColor(red: 59.0/pixelColorLim, green: 217.0/pixelColorLim, blue: 88.0/pixelColorLim, alpha: buttonTransparency)
     public static let pink = UIColor(red: 226.0/pixelColorLim, green: 164.0/pixelColorLim, blue: 235.0/pixelColorLim, alpha: buttonTransparency)
     public static let yellow = UIColor(red: 200.0/pixelColorLim, green: 219.0/pixelColorLim, blue: 88.0/pixelColorLim, alpha: buttonTransparency)
+    public static let blue = UIColor(red: 128.0/pixelColorLim, green: 176.0/pixelColorLim, blue: 252.0/pixelColorLim, alpha: buttonTransparency)
 }

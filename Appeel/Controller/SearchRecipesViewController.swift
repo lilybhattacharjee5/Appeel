@@ -70,17 +70,6 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         self.displayedRecipes.delegate = self
         self.displayedRecipes.dataSource = self
         
-//        self.finalRecipes = []
-//        self.ingredients = ["chicken breast"]
-//        self.from = 0
-//        self.to = 10
-//        self.ingr = Int.max
-//        self.diet = ""
-//        self.health = []
-//        self.calories = ""
-//        self.time = ""
-//        self.excluded = []
-        
         self.createRecipeList()
         self.displayedRecipes.rowHeight = UITableView.automaticDimension
         self.displayedRecipes.estimatedRowHeight = 100.0

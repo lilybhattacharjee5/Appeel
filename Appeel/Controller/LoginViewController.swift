@@ -50,6 +50,8 @@ class LoginViewController: UIViewController {
         loginButton.layer.cornerRadius = borderRadius
         loginButton.titleLabel!.font = ColorScheme.pingFang24
         loginButton.setTitleColor(ColorScheme.black, for: .normal)
+        
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
     
@@ -84,6 +86,11 @@ class LoginViewController: UIViewController {
     @IBAction func goBack(_ sender: Any) {
         performSegue(withIdentifier: "goBackLogin", sender: self)
     }
+    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        self.view.endEditing(true)
+//        return true
+//    }
     /*
     // MARK: - Navigation
 
