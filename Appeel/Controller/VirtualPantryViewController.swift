@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -16,7 +18,9 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet var addItem: UIButton!
     @IBOutlet var pantryItems: UITableView!
     
-    var pantryItemData: [String]!
+    var pantryItemData: [[Any]]!
+    
+    var userRef: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,10 +40,31 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         self.addItem.titleLabel!.font = ColorScheme.pingFang24
         self.addItem.backgroundColor = ColorScheme.green
         
-        pantryItemData = []
+        userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
         
         self.pantryItems.delegate = self
         self.pantryItems.dataSource = self
+        
+        populatePantry()
+    }
+    
+    private func populatePantry() {
+        getPantryData() { response in
+            self.pantryItemData = response
+            self.pantryItems.reloadData()
+        }
+    }
+    
+    private func getPantryData(completionHandler: @escaping ([[String]]) -> Void) {
+        userRef.child("pantryItems").observeSingleEvent(of: .value, with: { (snapshot) in
+            var allPantryData: [[String]]
+            if snapshot.exists() {
+                allPantryData = snapshot.value as? [[String]] ?? []
+            } else {
+                allPantryData = []
+            }
+            completionHandler(allPantryData)
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,12 +76,18 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if pantryItemData == nil {
+            return 0
+        }
         return pantryItemData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = pantryItems.dequeueReusableCell(withIdentifier: "pantry") as! PantryItemTableViewCell
-        cell.itemName.text = pantryItemData[indexPath.row]
+        cell.itemName.text = pantryItemData[indexPath.row][1] as? String ?? ""
+        cell.itemName.font = ColorScheme.pingFang18b
+        cell.itemBrand.text = pantryItemData[indexPath.row][3] as? String ?? ""
+        cell.itemBrand.font = ColorScheme.pingFang18
         return cell
     }
     

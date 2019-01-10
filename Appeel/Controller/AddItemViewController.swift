@@ -63,6 +63,15 @@ class AddItemViewController: ViewController, UINavigationControllerDelegate, UII
         print("hey")
         imagePicker.dismiss(animated: true, completion: nil)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "goToSearch" {
+            let pickItem: SearchItemViewController = segue.destination as! SearchItemViewController
+            pickItem.newPantryItem = PantryItem(image: itemImage.image ?? UIImage(), label: "", brand: "")
+        }
+    }
 
     /*
     // MARK: - Navigation

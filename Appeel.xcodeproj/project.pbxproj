@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		60EF5D679CE5288D63F6852A /* Pods_Appeel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8A7F75C624C57EA5208682 /* Pods_Appeel.framework */; };
+		701CDCBB21E6992900C5A7B6 /* PantryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCBA21E6992900C5A7B6 /* PantryItem.swift */; };
 		7034AB2B21E2D26F0014EDD8 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7034AB2A21E2D26F0014EDD8 /* ColorScheme.swift */; };
 		7034AB2D21E4576A0014EDD8 /* NutrientInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7034AB2C21E4576A0014EDD8 /* NutrientInfo.swift */; };
 		7034AB2F21E457810014EDD8 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7034AB2E21E457810014EDD8 /* Ingredient.swift */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		36046B6DC035CC28B7408164 /* Pods-Appeel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Appeel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Appeel/Pods-Appeel.debug.xcconfig"; sourceTree = "<group>"; };
+		701CDCBA21E6992900C5A7B6 /* PantryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryItem.swift; sourceTree = "<group>"; };
 		7034AB2A21E2D26F0014EDD8 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		7034AB2C21E4576A0014EDD8 /* NutrientInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientInfo.swift; sourceTree = "<group>"; };
 		7034AB2E21E457810014EDD8 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				7034AB2A21E2D26F0014EDD8 /* ColorScheme.swift */,
 				7034AB2C21E4576A0014EDD8 /* NutrientInfo.swift */,
 				7034AB2E21E457810014EDD8 /* Ingredient.swift */,
+				701CDCBA21E6992900C5A7B6 /* PantryItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				7034AB2F21E457810014EDD8 /* Ingredient.swift in Sources */,
 				70DC443821E1656E006A5391 /* SearchRecipesViewController.swift in Sources */,
 				7034AB3321E559EB0014EDD8 /* GeneralSearchViewController.swift in Sources */,
+				701CDCBB21E6992900C5A7B6 /* PantryItem.swift in Sources */,
 				70DC443421E164DC006A5391 /* CurrentStatusViewController.swift in Sources */,
 				70A405EB21DF2E52001D280A /* ViewController.swift in Sources */,
 				70DC443221E1411B006A5391 /* UserProfile.swift in Sources */,

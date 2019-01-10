@@ -12,7 +12,7 @@ class PantryItemTableViewCell: UITableViewCell {
 
     @IBOutlet var itemImage: UIImageView!
     @IBOutlet var itemName: UILabel!
-    @IBOutlet var itemAmount: UILabel!
+    @IBOutlet var itemBrand: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

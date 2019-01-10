@@ -19,7 +19,9 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
     @IBOutlet var searchItemResults: UITableView!
     
     var searchController: UISearchController!
-    var searchResults: [[String]]!
+    var searchResults: [[Any]]!
+    
+    var newPantryItem: PantryItem!
     
     private let appId: String = "a45d2060"
     private let appKey: String = "273ebdd46ede074bc43ae62ebee89d0f"
@@ -36,7 +38,7 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         
         searchController = UISearchController(searchResultsController: nil)
         
-        self.searchResults = [[]]
+        self.searchResults = []
         
         self.searchItemResults.delegate = self
         self.searchItemResults.dataSource = self
@@ -56,11 +58,12 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
                     let json = JSON(result)
                     let currPageData = json["hints"]
                     
-                    var addedResult: [String]
+                    var addedResult: [Any]
                     
                     for result in 0...currPageData.count - 1 {
                         var newResult = currPageData[result]["food"]
                         addedResult = [
+                            "",
                             newResult["label"].string ?? "",
                             newResult["category"].string ?? "",
                             newResult["brand"].string ?? ""
@@ -85,19 +88,19 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchItemResults.dequeueReusableCell(withIdentifier: "result", for: indexPath) as! SearchItemTableViewCell
-        var currRowData: [String] = searchResults[indexPath.row]
+        var currRowData: [Any] = searchResults[indexPath.row]
         
-        if currRowData.count < 3 {
-            currRowData = ["", "", ""]
+        if currRowData.count < 4 {
+            currRowData = ["", "", "", ""]
         }
         
-        cell.itemLabel.text = currRowData[0]
+        cell.itemLabel.text = currRowData[1] as? String ?? ""
         cell.itemLabel.font = ColorScheme.pingFang18b
         
-        cell.itemCategory.text = currRowData[1]
+        cell.itemCategory.text = currRowData[2] as? String ?? ""
         cell.itemCategory.font = ColorScheme.pingFang18
         
-        cell.itemBrand.text = currRowData[2]
+        cell.itemBrand.text = currRowData[3] as? String ?? ""
         cell.itemBrand.font = ColorScheme.pingFang18
         
         return cell
@@ -128,8 +131,13 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         // Pass the selected object to the new view controller.
         if segue.identifier == "goToPantry" {
             let updatedPantry: VirtualPantryViewController = segue.destination as! VirtualPantryViewController
-            updatedPantry.pantryItemData.append(searchResults![searchItemResults.indexPathForSelectedRow!.row][0])
-            userRef.updateChildValues(["pantryItems": updatedPantry.pantryItemData!])
+            
+            newPantryItem.setBrand(brand: searchResults![searchItemResults.indexPathForSelectedRow!.row][2] as? String ?? "")
+            newPantryItem.setLabel(label: searchResults![searchItemResults.indexPathForSelectedRow!.row][3] as? String ?? "")
+            
+            updatedPantry.pantryItemData.append(searchResults![searchItemResults.indexPathForSelectedRow!.row])
+            
+            userRef.updateChildValues(["pantryItems": updatedPantry.pantryItemData])
         }
     }
 
