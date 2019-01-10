@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class AddItemViewController: ViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -16,6 +18,8 @@ class AddItemViewController: ViewController, UINavigationControllerDelegate, UII
     @IBOutlet var addItem: UIButton!
     
     var imagePicker: UIImagePickerController!
+    
+    var userRef: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +51,8 @@ class AddItemViewController: ViewController, UINavigationControllerDelegate, UII
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
+        
+        self.userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
     }
     
     @IBAction func goToCamera(_ sender: Any) {
@@ -60,7 +66,6 @@ class AddItemViewController: ViewController, UINavigationControllerDelegate, UII
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         itemImage.image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-        print("hey")
         imagePicker.dismiss(animated: true, completion: nil)
     }
     
@@ -68,8 +73,21 @@ class AddItemViewController: ViewController, UINavigationControllerDelegate, UII
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "goToSearch" {
-            let pickItem: SearchItemViewController = segue.destination as! SearchItemViewController
-            pickItem.newPantryItem = PantryItem(image: itemImage.image ?? UIImage(), label: "", brand: "")
+            userRef.child("imgCounter").observeSingleEvent(of: .value, with: { (snapshot) in
+                let imgNum: Int
+                if snapshot.exists() {
+                    imgNum = snapshot.value as? Int ?? 0
+                } else {
+                    imgNum = 0
+                }
+                let pickItem: SearchItemViewController = segue.destination as! SearchItemViewController
+                if self.itemImage.image == nil {
+                    pickItem.newPantryItem = PantryItem(image: self.itemImage.image ?? UIImage(), label: "", brand: "", imgUrl: "")
+                } else {
+                    pickItem.newPantryItem = PantryItem(image: self.itemImage.image ?? UIImage(), label: "", brand: "", imgUrl: String(imgNum) + ".png")
+                    self.userRef.updateChildValues(["imgCounter": imgNum + 1])
+                }
+            })
         }
     }
 

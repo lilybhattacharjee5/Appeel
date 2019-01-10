@@ -85,13 +85,15 @@ class SignupViewController: UIViewController {
         } else {
             Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
                 if error == nil {
-                    let userInfo = UserProfile(email: email, firstName: firstName, lastName: lastName).toDict()
+                    let userInfo = UserProfile(email: email, firstName: firstName, lastName: lastName, imgCounter: 0).toDict()
                     let childRef = Database.database().reference(withPath: "users")
                     childRef.child((Auth.auth().currentUser?.uid)!).setValue(userInfo)
                     let accountCreatedController = UIAlertController(title: "Account Created", message: "The new account was successfully created.", preferredStyle: .alert)
-                    accountCreatedController.addAction(defaultAction)
+                    let specialAction = UIAlertAction(title: "OK", style: .cancel, handler: {_ in
+                        self.performSegue(withIdentifier: "signupToLogin", sender: sender)
+                    })
+                    accountCreatedController.addAction(specialAction)
                     self.present(accountCreatedController, animated: true, completion: nil)
-                    self.performSegue(withIdentifier: "signupToLogin", sender: sender)
                 } else {
                     let formErrorController = UIAlertController(title: "Form Error", message: "There was an error while creating this account. Please try again.", preferredStyle: .alert)
                     formErrorController.addAction(defaultAction)

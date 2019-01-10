@@ -13,6 +13,8 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
     @IBOutlet var goBack: UIButton!
     @IBOutlet var generalSearch: UIButton!
     
+    @IBOutlet var scrollView: UIScrollView!
+    
     @IBOutlet var generalSearchLabel: UILabel!
     @IBOutlet var queryLabel: UILabel!
     @IBOutlet var rankingLabel: UILabel!
@@ -41,6 +43,7 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
     @IBOutlet var dietPicker: UIPickerView!
     
     let dietPickerData: [String] = ["none", "balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
+    var queryFromPantry: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +69,9 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         queryLabel.text = "Query"
         queryLabel.font = ColorScheme.pingFang18b
         queryField.font = ColorScheme.pingFang18
+        if queryFromPantry != nil {
+            queryField.text = queryFromPantry
+        }
         
         rankingLabel.text = "Ranking"
         rankingLabel.font = ColorScheme.pingFang18b
@@ -117,6 +123,25 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification:NSNotification){
+        var userInfo = notification.userInfo!
+        var keyboardFrame:CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+        
+        var contentInset:UIEdgeInsets = self.scrollView.contentInset
+        contentInset.bottom = keyboardFrame.size.height
+        scrollView.contentInset = contentInset
+    }
+    
+    @objc func keyboardWillHide(notification:NSNotification){
+        
+        let contentInset:UIEdgeInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

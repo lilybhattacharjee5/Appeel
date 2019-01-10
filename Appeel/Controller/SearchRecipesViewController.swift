@@ -15,7 +15,7 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
 
     @IBOutlet var exploreRecipesLabel: UILabel!
     @IBOutlet var tabDisplay: UITabBarItem!
-    @IBOutlet var randomRecipe: UIButton!
+    @IBOutlet var photoRecipe: UIButton!
     @IBOutlet var searchByIngred: UIButton!
     @IBOutlet var generalSearch: UIButton!
     @IBOutlet var displayedRecipes: UITableView!
@@ -45,11 +45,11 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         
         let padding: CGFloat = 10.0
         
-        randomRecipe.titleLabel!.font = ColorScheme.pingFang18
-        randomRecipe.setTitleColor(ColorScheme.black, for: .normal)
-        randomRecipe.backgroundColor = ColorScheme.green
-        randomRecipe.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        randomRecipe.layer.cornerRadius = padding
+        photoRecipe.titleLabel!.font = ColorScheme.pingFang18
+        photoRecipe.setTitleColor(ColorScheme.black, for: .normal)
+        photoRecipe.backgroundColor = ColorScheme.green
+        photoRecipe.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        photoRecipe.layer.cornerRadius = padding
         
         searchByIngred.titleLabel!.font = ColorScheme.pingFang18
         searchByIngred.setTitleColor(ColorScheme.black, for: .normal)
@@ -63,7 +63,7 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         generalSearch.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         generalSearch.layer.cornerRadius = padding
         
-        randomRecipe.setTitle("Random", for: .normal)
+        photoRecipe.setTitle("Photo", for: .normal)
         searchByIngred.setTitle("Pantry", for: .normal)
         generalSearch.setTitle("General", for: .normal)
         

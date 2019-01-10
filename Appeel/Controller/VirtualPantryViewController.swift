@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
+import FirebaseUI
 
 class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -18,9 +20,11 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet var addItem: UIButton!
     @IBOutlet var pantryItems: UITableView!
     
-    var pantryItemData: [[Any]]!
+    var pantryItemData: [[String: Any]]!
+    var imageData: [UIImage]!
     
     var userRef: DatabaseReference!
+    var storageRef: StorageReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +45,7 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         self.addItem.backgroundColor = ColorScheme.green
         
         userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
+        storageRef = Storage.storage().reference().child("users").child(Auth.auth().currentUser!.uid)
         
         self.pantryItems.delegate = self
         self.pantryItems.dataSource = self
@@ -55,11 +60,11 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    private func getPantryData(completionHandler: @escaping ([[String]]) -> Void) {
+    private func getPantryData(completionHandler: @escaping ([[String: Any]]) -> Void) {
         userRef.child("pantryItems").observeSingleEvent(of: .value, with: { (snapshot) in
-            var allPantryData: [[String]]
+            var allPantryData: [[String: Any]]
             if snapshot.exists() {
-                allPantryData = snapshot.value as? [[String]] ?? []
+                allPantryData = snapshot.value as? [[String: Any]] ?? []
             } else {
                 allPantryData = []
             }
@@ -84,11 +89,29 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = pantryItems.dequeueReusableCell(withIdentifier: "pantry") as! PantryItemTableViewCell
-        cell.itemName.text = pantryItemData[indexPath.row][1] as? String ?? ""
+        cell.itemName.text = pantryItemData[indexPath.row]["label"] as? String ?? ""
         cell.itemName.font = ColorScheme.pingFang18b
-        cell.itemBrand.text = pantryItemData[indexPath.row][3] as? String ?? ""
+        cell.itemBrand.text = pantryItemData[indexPath.row]["brand"] as? String ?? ""
         cell.itemBrand.font = ColorScheme.pingFang18
+        
+        let currImgUrl = pantryItemData[indexPath.row]["image"] as? String ?? ""
+        if currImgUrl != "" {
+            let imageRef = storageRef.child(currImgUrl)
+            print(imageRef)
+            cell.itemImage.sd_setImage(with: imageRef, placeholderImage: UIImage())
+        }
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            self.pantryItemData.remove(at: indexPath.row)
+            self.pantryItems.deleteRows(at: [indexPath], with: .fade)
+            self.userRef.updateChildValues(["pantryItems": self.pantryItemData])
+        }
+        
+        return [delete]
     }
     
     @IBAction func unwindToVirtualPantry(segue: UIStoryboardSegue) {

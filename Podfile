@@ -9,6 +9,8 @@ target 'Appeel' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
+  pod 'FirebaseUI/Storage'
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
   pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
   pod 'Kingfisher'

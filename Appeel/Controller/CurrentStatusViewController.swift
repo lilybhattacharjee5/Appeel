@@ -24,6 +24,7 @@ class CurrentStatusViewController: ViewController {
     var email: String!
     var firstName: String!
     var lastName: String!
+    var imgCounter: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,8 @@ class CurrentStatusViewController: ViewController {
             self.email = userInfo?["email"] as? String ?? ""
             self.firstName = userInfo?["firstName"] as? String ?? ""
             self.lastName = userInfo?["lastName"] as? String ?? ""
-            self.currentUser = UserProfile(email: self.email, firstName: self.firstName, lastName: self.lastName)
+            self.imgCounter = userInfo?["imgCounter"] as? Int ?? 0
+            self.currentUser = UserProfile(email: self.email, firstName: self.firstName, lastName: self.lastName, imgCounter: self.imgCounter)
             self.accountNameLabel.text = self.firstName + "."
             self.accountNameLabel.textColor = ColorScheme.red
             self.accountNameLabel.font = ColorScheme.cochinItalic50

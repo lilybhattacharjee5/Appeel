@@ -14,11 +14,13 @@ class PantryItem {
     private var image: UIImage!
     private var label: String!
     private var brand: String!
+    private var imgUrl: String!
     
-    init(image: UIImage, label: String, brand: String) {
+    init(image: UIImage, label: String, brand: String, imgUrl: String) {
         self.image = image
         self.label = label
         self.brand = brand
+        self.imgUrl = imgUrl
     }
     
     // getter methods
@@ -34,6 +36,10 @@ class PantryItem {
         return self.brand
     }
     
+    public func getImgUrl() -> String {
+        return self.imgUrl
+    }
+    
     // setter methods
     public func setImage(image: UIImage) {
         self.image = image
@@ -45,6 +51,10 @@ class PantryItem {
     
     public func setBrand(brand: String) {
         self.brand = brand
+    }
+    
+    public func setImgUrl(imgUrl: String) {
+        self.imgUrl = imgUrl
     }
     
 }

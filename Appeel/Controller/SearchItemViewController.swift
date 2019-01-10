@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
 
 class SearchItemViewController: ViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
@@ -19,7 +20,7 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
     @IBOutlet var searchItemResults: UITableView!
     
     var searchController: UISearchController!
-    var searchResults: [[Any]]!
+    var searchResults: [[String: Any]]!
     
     var newPantryItem: PantryItem!
     
@@ -27,6 +28,9 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
     private let appKey: String = "273ebdd46ede074bc43ae62ebee89d0f"
     
     var userRef: DatabaseReference!
+    var storageRef: StorageReference!
+    
+    let uid = Auth.auth().currentUser!.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +47,8 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         self.searchItemResults.delegate = self
         self.searchItemResults.dataSource = self
         
-        userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
+        userRef = Database.database().reference().child("users").child(uid)
+        storageRef = Storage.storage().reference().child("users").child(uid)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -58,15 +63,15 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
                     let json = JSON(result)
                     let currPageData = json["hints"]
                     
-                    var addedResult: [Any]
+                    var addedResult: [String: Any]
                     
                     for result in 0...currPageData.count - 1 {
                         var newResult = currPageData[result]["food"]
                         addedResult = [
-                            "",
-                            newResult["label"].string ?? "",
-                            newResult["category"].string ?? "",
-                            newResult["brand"].string ?? ""
+                            "image": self.newPantryItem.getImgUrl(),
+                            "label": newResult["label"].string ?? "",
+                            "category": newResult["category"].string ?? "",
+                            "brand": newResult["brand"].string ?? ""
                         ]
                         print(addedResult)
                         self.searchResults.append(addedResult)
@@ -88,19 +93,19 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchItemResults.dequeueReusableCell(withIdentifier: "result", for: indexPath) as! SearchItemTableViewCell
-        var currRowData: [Any] = searchResults[indexPath.row]
+        var currRowData: [String: Any] = searchResults[indexPath.row]
         
         if currRowData.count < 4 {
-            currRowData = ["", "", "", ""]
+            currRowData = ["": "", "": "", "": "", "": ""]
         }
         
-        cell.itemLabel.text = currRowData[1] as? String ?? ""
+        cell.itemLabel.text = currRowData["label"] as? String ?? ""
         cell.itemLabel.font = ColorScheme.pingFang18b
         
-        cell.itemCategory.text = currRowData[2] as? String ?? ""
+        cell.itemCategory.text = currRowData["category"] as? String ?? ""
         cell.itemCategory.font = ColorScheme.pingFang18
         
-        cell.itemBrand.text = currRowData[3] as? String ?? ""
+        cell.itemBrand.text = currRowData["brand"] as? String ?? ""
         cell.itemBrand.font = ColorScheme.pingFang18
         
         return cell
@@ -132,8 +137,13 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         if segue.identifier == "goToPantry" {
             let updatedPantry: VirtualPantryViewController = segue.destination as! VirtualPantryViewController
             
-            newPantryItem.setBrand(brand: searchResults![searchItemResults.indexPathForSelectedRow!.row][2] as? String ?? "")
-            newPantryItem.setLabel(label: searchResults![searchItemResults.indexPathForSelectedRow!.row][3] as? String ?? "")
+            newPantryItem.setBrand(brand: searchResults![searchItemResults.indexPathForSelectedRow!.row]["brand"] as? String ?? "")
+            newPantryItem.setLabel(label: searchResults![searchItemResults.indexPathForSelectedRow!.row]["label"] as? String ?? "")
+            
+            if newPantryItem.getImgUrl() != "" {
+                let data: Data = newPantryItem.getImage().pngData() ?? Data()
+                storageRef.child(newPantryItem.getImgUrl()).putData(data, metadata: nil)
+            }
             
             updatedPantry.pantryItemData.append(searchResults![searchItemResults.indexPathForSelectedRow!.row])
             
