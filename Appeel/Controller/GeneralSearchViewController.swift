@@ -43,7 +43,7 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
     @IBOutlet var dietPicker: UIPickerView!
     
     let dietPickerData: [String] = ["none", "balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
-    var queryFromPantry: String!
+    var query: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,8 +69,8 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         queryLabel.text = "Query"
         queryLabel.font = ColorScheme.pingFang18b
         queryField.font = ColorScheme.pingFang18
-        if queryFromPantry != nil {
-            queryField.text = queryFromPantry
+        if query != nil {
+            queryField.text = query
         }
         
         rankingLabel.text = "Ranking"

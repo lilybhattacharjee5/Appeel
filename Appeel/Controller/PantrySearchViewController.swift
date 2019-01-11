@@ -21,6 +21,8 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
     
     var userRef: DatabaseReference!
     
+    var selectedCells: [PantrySearchTableViewCell] = []
+    
     var pantryItemData: [[String: Any]]!
     
     override func viewDidLoad() {
@@ -79,12 +81,13 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         // Pass the selected object to the new view controller.
         if segue.identifier == "pantryToGeneral" {
             let pantryToGen: GeneralSearchViewController = segue.destination as! GeneralSearchViewController
-            pantryToGen.queryFromPantry = self.query
+            pantryToGen.query = self.query
         }
     }
     
     @IBAction func goToGeneral(_ sender: Any) {
         self.query = composeQuery()
+        print(query)
         if self.query != "" {
             performSegue(withIdentifier: "pantryToGeneral", sender: sender)
         }
@@ -92,12 +95,10 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
     
     private func composeQuery() -> String {
         var returnedQuery: String = ""
-        let selectedRows = pantrySearchItems.indexPathsForSelectedRows ?? []
         var counter = 0
-        for indexPath in selectedRows {
-            let cell = pantrySearchItems.cellForRow(at: indexPath) as! PantrySearchTableViewCell
-            let currVal = cell.label.text ?? ""
-            if counter < selectedRows.count - 1 {
+        for selectedCell in selectedCells {
+            let currVal = selectedCell.label.text ?? ""
+            if counter < selectedCells.count - 1 {
                 if currVal != "" {
                     returnedQuery += (currVal + " ")
                 }
@@ -128,6 +129,20 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         cell.brand.font = ColorScheme.pingFang18
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell:UITableViewCell = pantrySearchItems.cellForRow(at: indexPath as IndexPath)!
+        selectedCell.contentView.backgroundColor = ColorScheme.pink
+        selectedCells.append(selectedCell as! PantrySearchTableViewCell)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cellToDeSelect:UITableViewCell = pantrySearchItems.cellForRow(at: indexPath)!
+        cellToDeSelect.contentView.backgroundColor = UIColor.clear
+        if let index = selectedCells.index(of: cellToDeSelect as! PantrySearchTableViewCell) {
+            selectedCells.remove(at: index)
+        }
     }
     
     /*

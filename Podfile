@@ -14,6 +14,7 @@ target 'Appeel' do
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
   pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
   pod 'Kingfisher'
+  pod 'Clarifai'
 
 end
 

@@ -10,6 +10,10 @@
 		60EF5D679CE5288D63F6852A /* Pods_Appeel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8A7F75C624C57EA5208682 /* Pods_Appeel.framework */; };
 		701CDCBB21E6992900C5A7B6 /* PantryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCBA21E6992900C5A7B6 /* PantryItem.swift */; };
 		701CDCBF21E78CB100C5A7B6 /* PantrySearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCBE21E78CB100C5A7B6 /* PantrySearchTableViewCell.swift */; };
+		701CDCC121E7FB7600C5A7B6 /* PhotoSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCC021E7FB7600C5A7B6 /* PhotoSearchViewController.swift */; };
+		701CDCC321E80E0300C5A7B6 /* IngredientChoicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCC221E80E0300C5A7B6 /* IngredientChoicesViewController.swift */; };
+		701CDCC521E81FA500C5A7B6 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCC421E81FA500C5A7B6 /* ApiKeys.swift */; };
+		701CDCC721E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDCC621E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift */; };
 		7034AB2B21E2D26F0014EDD8 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7034AB2A21E2D26F0014EDD8 /* ColorScheme.swift */; };
 		7034AB2D21E4576A0014EDD8 /* NutrientInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7034AB2C21E4576A0014EDD8 /* NutrientInfo.swift */; };
 		7034AB2F21E457810014EDD8 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7034AB2E21E457810014EDD8 /* Ingredient.swift */; };
@@ -45,6 +49,10 @@
 		36046B6DC035CC28B7408164 /* Pods-Appeel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Appeel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Appeel/Pods-Appeel.debug.xcconfig"; sourceTree = "<group>"; };
 		701CDCBA21E6992900C5A7B6 /* PantryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryItem.swift; sourceTree = "<group>"; };
 		701CDCBE21E78CB100C5A7B6 /* PantrySearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantrySearchTableViewCell.swift; sourceTree = "<group>"; };
+		701CDCC021E7FB7600C5A7B6 /* PhotoSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSearchViewController.swift; sourceTree = "<group>"; };
+		701CDCC221E80E0300C5A7B6 /* IngredientChoicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientChoicesViewController.swift; sourceTree = "<group>"; };
+		701CDCC421E81FA500C5A7B6 /* ApiKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
+		701CDCC621E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResultsTableViewCell.swift; sourceTree = "<group>"; };
 		7034AB2A21E2D26F0014EDD8 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		7034AB2C21E4576A0014EDD8 /* NutrientInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientInfo.swift; sourceTree = "<group>"; };
 		7034AB2E21E457810014EDD8 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
@@ -125,6 +133,7 @@
 				70A405FB21DFE923001D280A /* View */,
 				70A405FA21DFE904001D280A /* Model */,
 				70A405E821DF2E52001D280A /* AppDelegate.swift */,
+				701CDCC421E81FA500C5A7B6 /* ApiKeys.swift */,
 				70A405EC21DF2E52001D280A /* Main.storyboard */,
 				70A405EF21DF2E54001D280A /* Assets.xcassets */,
 				70A405F121DF2E54001D280A /* LaunchScreen.storyboard */,
@@ -155,6 +164,7 @@
 				7034AB3621E55BD50014EDD8 /* RecipeInfoTableViewCell.swift */,
 				70ADF65321E5FBA8008F07A2 /* PantryItemTableViewCell.swift */,
 				70ADF65721E63DD1008F07A2 /* SearchItemTableViewCell.swift */,
+				701CDCC621E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -177,6 +187,8 @@
 				7034AB3421E55A080014EDD8 /* PantrySearchViewController.swift */,
 				70ADF65121E5FA57008F07A2 /* AddItemViewController.swift */,
 				70ADF65521E62C46008F07A2 /* SearchItemViewController.swift */,
+				701CDCC021E7FB7600C5A7B6 /* PhotoSearchViewController.swift */,
+				701CDCC221E80E0300C5A7B6 /* IngredientChoicesViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -291,7 +303,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Appeel/Pods-Appeel-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Clarifai/Clarifai.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
@@ -304,7 +318,9 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Clarifai.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
@@ -334,6 +350,7 @@
 				70ADF65621E62C46008F07A2 /* SearchItemViewController.swift in Sources */,
 				70ADF65821E63DD1008F07A2 /* SearchItemTableViewCell.swift in Sources */,
 				70F3B08421E06EA800D8B062 /* PageViewController.swift in Sources */,
+				701CDCC721E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift in Sources */,
 				70F3B07C21DFF98C00D8B062 /* LoginViewController.swift in Sources */,
 				7034AB2F21E457810014EDD8 /* Ingredient.swift in Sources */,
 				70DC443821E1656E006A5391 /* SearchRecipesViewController.swift in Sources */,
@@ -341,7 +358,9 @@
 				701CDCBB21E6992900C5A7B6 /* PantryItem.swift in Sources */,
 				70DC443421E164DC006A5391 /* CurrentStatusViewController.swift in Sources */,
 				70A405EB21DF2E52001D280A /* ViewController.swift in Sources */,
+				701CDCC521E81FA500C5A7B6 /* ApiKeys.swift in Sources */,
 				70DC443221E1411B006A5391 /* UserProfile.swift in Sources */,
+				701CDCC321E80E0300C5A7B6 /* IngredientChoicesViewController.swift in Sources */,
 				70CAEC1C21E1A14100FAA12A /* Recipe.swift in Sources */,
 				70DC443621E1655A006A5391 /* VirtualPantryViewController.swift in Sources */,
 				70ADF65421E5FBA8008F07A2 /* PantryItemTableViewCell.swift in Sources */,
@@ -350,6 +369,7 @@
 				7034AB3121E4806E0014EDD8 /* RecipeZoomViewController.swift in Sources */,
 				70A405FE21DFE964001D280A /* HomeViewController.swift in Sources */,
 				7034AB3721E55BD50014EDD8 /* RecipeInfoTableViewCell.swift in Sources */,
+				701CDCC121E7FB7600C5A7B6 /* PhotoSearchViewController.swift in Sources */,
 				70CAEC2021E1FF5600FAA12A /* RecipeTableViewCell.swift in Sources */,
 				70ADF65221E5FA57008F07A2 /* AddItemViewController.swift in Sources */,
 			);

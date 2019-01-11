@@ -115,7 +115,7 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @IBAction func unwindToVirtualPantry(segue: UIStoryboardSegue) {
-        
+        pantryItems.reloadData()
     }
 
     /*
