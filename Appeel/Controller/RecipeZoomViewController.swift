@@ -27,8 +27,12 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
     var currRecipe: Recipe!
     var displayedAttributes: [[String]]!
     
+    var ref: DatabaseReference!
     var userRef: DatabaseReference!
     var recipeRef: DatabaseReference!
+    
+    var ratingVal: Double!
+    var numRatingsVal: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,16 +72,20 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         self.recipeInfoTable.dataSource = self
         self.recipeInfoTable.estimatedRowHeight = 100.0
         self.recipeInfoTable.rowHeight = UITableView.automaticDimension
+        
+        ref = Database.database().reference()
+        userRef = ref.child("users").child(Auth.auth().currentUser!.uid)
+        recipeRef = Database.database().reference()
+        
+        getRating(id: currRecipe.getId())
     
+        rating.settings.fillMode = .precise
         rating.settings.starSize = 30
-        rating.rating = 0
+        rating.settings.filledColor = ColorScheme.pink
         rating.settings.updateOnTouch = false
         
         numRatings.font = ColorScheme.pingFang18
-        numRatings.text = "0 ratings"
-        
-        userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
-        recipeRef = Database.database().reference()
+        numRatings.numberOfLines = 2
     }
     
     func tableView(_ tableView: UITableView, numberOfSections numSections: Int) -> Int {
@@ -94,6 +102,30 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
             let svc = SFSafariViewController(url: URL(string: displayedAttributes[indexPath.row][1])!)
             present(svc, animated: true, completion: nil)
         }
+    }
+    
+    func getRating(id: String) {
+        ref.child("recipes").observeSingleEvent(of: .value, with: { (snapshot) in
+            if !snapshot.exists() {
+                self.ratingVal = 0
+                self.numRatingsVal = 0
+            } else {
+                if snapshot.hasChildren() {
+                    if snapshot.hasChild(id) {
+                        self.numRatingsVal = snapshot.childSnapshot(forPath: id).childSnapshot(forPath: "numRatings").value as? Double ?? 0
+                        self.ratingVal = snapshot.childSnapshot(forPath: id).childSnapshot(forPath: "rating").value as? Double ?? 0
+                    } else {
+                        self.ratingVal = 0
+                        self.numRatingsVal = 0
+                    }
+                } else {
+                    self.ratingVal = 0
+                    self.numRatingsVal = 0
+                }
+            }
+            self.rating.rating = self.ratingVal
+            self.numRatings.text = String(Int(self.numRatingsVal)) + " ratings"
+        })
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -123,28 +155,40 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         writeSavedRecipe(id: currRecipe.getId())
     }
     
-    @IBAction func rateRecipe(_ sender: Any) {
-//        var rate: CosmosView = CosmosView()
-//        rate.rating = 5
-//        rate.text = "Rate this recipe!"
-//        rate.didTouchCosmos = {
-//            rating in
-//        }
-//        rate.didFinishTouchingCosmos = {
-//            rating in
-//        }
-    }
-    
     func writeSavedRecipe(id: String) {
-        userRef.child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("recipes").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.hasChildren() {
                 if !snapshot.hasChild(id) {
-                    self.userRef.child("savedRecipes").updateChildValues([id: self.currRecipe.allAttributesDict()])
+                    self.ref.child("recipes").child(id).updateChildValues(self.currRecipe.allAttributesDict())
                 }
             } else {
-                self.userRef.child("savedRecipes").setValue([id: self.currRecipe.allAttributesDict()])
+                self.ref.child("recipes").child(id).setValue(self.currRecipe.allAttributesDict())
             }
         })
+        
+        userRef.child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                if !(snapshot.value as? [String] ?? []).contains(id) {
+                    self.userRef.updateChildValues(["savedRecipes": (snapshot.value as? [String] ?? []) + [id]])
+                }
+            } else {
+                self.userRef.updateChildValues(["savedRecipes": [id]])
+            }
+        })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "rate" {
+            let ratingController: RatingViewController = segue.destination as! RatingViewController
+            ratingController.imageToRate = recipeImg.image
+            ratingController.currRecipe = currRecipe
+        }
+    }
+    
+    @IBAction func unwindToRecipeZoom(segue: UIStoryboardSegue) {
+        
     }
     
     /*

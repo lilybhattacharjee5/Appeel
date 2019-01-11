@@ -53,7 +53,12 @@ class Recipe {
         self.dietLabels = dietLabels
         self.healthLabels = healthLabels
         self.url = url
-        self.recipeId = UUID().uuidString
+        self.recipeId = Recipe.createId(url: url)
+    }
+    
+    private static func createId(url: String) -> String {
+        let id = (url).components(separatedBy: [".", "$", "[", "]", "#", "/"]).joined(separator: "")
+        return id
     }
     
     public func allAttributes() -> [[String]] {

@@ -14,8 +14,8 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var myRecipesLabel: UILabel!
     @IBOutlet var myRecipes: UITableView!
     var myRecipesLabelText: String!
-    var recipeData: [String: [String: String]]!
-    var tableData: [[String: String]] = []
+    var recipeData: [String: [String: Any]]!
+    var tableData: [[String: Any]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,11 +40,11 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: MyRecipeTableViewCell = myRecipes.dequeueReusableCell(withIdentifier: "myRecipe", for: indexPath) as! MyRecipeTableViewCell
         
-        cell.label.text = tableData[indexPath.row]["label"] ?? ""
+        cell.label.text = tableData[indexPath.row]["label"] as? String ?? ""
         cell.label.font = ColorScheme.pingFang20
         cell.label.numberOfLines = 3
         
-        let stringUrl: String = tableData[indexPath.row]["imgUrl"] ?? ""
+        let stringUrl: String = tableData[indexPath.row]["imgUrl"] as? String ?? ""
         let url = URL(string: stringUrl)
         
         cell.recipeImage.kf.setImage(with: url)
@@ -56,7 +56,7 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let url: String = tableData[indexPath.row]["Url"] ?? ""
+        let url: String = tableData[indexPath.row]["Url"] as? String ?? ""
         let svc = SFSafariViewController(url: URL(string: url)!)
         present(svc, animated: true, completion: nil)
     }

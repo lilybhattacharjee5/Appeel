@@ -26,7 +26,7 @@ class CurrentStatusViewController: ViewController {
     
     var ref: DatabaseReference!
     
-    var nextControllerData: [String: [String: String]]!
+    var nextControllerData: [String: [String: Any]]!
     var nextControllerTitle: String!
 
     var currentUser: UserProfile!
@@ -108,10 +108,30 @@ class CurrentStatusViewController: ViewController {
     @IBAction func getSavedRecipes(_ sender: Any) {
         ref.child("users").child(Auth.auth().currentUser!.uid).child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.hasChildren() {
-                self.nextControllerData = snapshot.value as? [String: [String: String]] ?? [:]
-                self.nextControllerTitle = "Saved"
-                self.performSegue(withIdentifier: "viewRecipes", sender: sender)
+                var counter = 0
+                var tableData: [String: [String: Any]] = [:]
+                let allRecipeIds: [String] = (snapshot.value as! [String])
+                for recipeId in allRecipeIds {
+                    self.getRecipe(recipeId: recipeId) { success in
+                        tableData[recipeId] = success
+                        if counter == allRecipeIds.count - 1 {
+                            print(tableData)
+                            self.nextControllerData = tableData
+                            self.nextControllerTitle = "Saved"
+                            self.performSegue(withIdentifier: "viewRecipes", sender: sender)
+                        }
+                        counter += 1
+                        print(counter)
+                    }
+                }
             }
+        })
+    }
+    
+    func getRecipe(recipeId: String, completionHandler: @escaping ([String: Any]) -> ()) {
+        let recipeRef: DatabaseReference = self.ref.child("recipes")
+        recipeRef.child(recipeId).observeSingleEvent(of: .value, with: { (recipeSnapshot) in
+            completionHandler(recipeSnapshot.value as? [String: Any] ?? [:])
         })
     }
     /*
