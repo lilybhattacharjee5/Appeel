@@ -17,6 +17,7 @@ PODS:
   - Alamofire (5.0.0.beta.1)
   - Clarifai (2.3.2):
     - AFNetworking (~> 3.1)
+  - Cosmos (18.0.1)
   - Firebase/Auth (5.15.0):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.2.0)
@@ -103,6 +104,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`)
   - Clarifai
+  - Cosmos
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -115,6 +117,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - Clarifai
+    - Cosmos
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -150,6 +153,7 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: 2ef6d6c984c5d21c366e9b41a9ae7dfee2b67a44
   Clarifai: 6d6cce2b31aefcf33893f2c3a18588b266771d11
+  Cosmos: 7dfaa3f52584ca5f94ab74b5c2e264019cc9f7f5
   Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
   FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
   FirebaseAuth: 02e969ff430e156d99d4cb842d77b806b71ad7bb
@@ -168,6 +172,6 @@ SPEC CHECKSUMS:
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: 8bbda5cac735aa98e396c46a5a635665063a6b6f
+PODFILE CHECKSUM: 4ce26ab8b7f08aaf1dbb31cf89915cb71846bfab
 
 COCOAPODS: 1.5.3

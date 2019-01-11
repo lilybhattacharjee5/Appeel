@@ -152,7 +152,8 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
                         totalNutrients: [],
                         totalDaily: [],
                         dietLabels: currRecipe["dietLabels"].arrayObject as! [String],
-                        healthLabels: currRecipe["healthLabels"].arrayObject as! [String]
+                        healthLabels: currRecipe["healthLabels"].arrayObject as! [String],
+                        url: currRecipe["url"].string!
                     )
                     allRecipes.append(newRecipe)
                 }

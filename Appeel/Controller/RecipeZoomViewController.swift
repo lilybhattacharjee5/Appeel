@@ -8,19 +8,27 @@
 
 import UIKit
 import Kingfisher
+import Cosmos
+import FirebaseDatabase
+import FirebaseAuth
+import SafariServices
 
 class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet var rating: CosmosView!
     @IBOutlet var goBack: UIButton!
     @IBOutlet var recipeName: UILabel!
     @IBOutlet var recipeImg: UIImageView!
     @IBOutlet var save: UIButton!
-    @IBOutlet var favorite: UIButton!
     @IBOutlet var tried: UIButton!
     @IBOutlet var recipeInfoTable: UITableView!
+    @IBOutlet var numRatings: UILabel!
     
     var currRecipe: Recipe!
     var displayedAttributes: [[String]]!
+    
+    var userRef: DatabaseReference!
+    var recipeRef: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,14 +57,7 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         save.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         save.layer.cornerRadius = padding
         
-        favorite.setTitle("Fave", for: .normal)
-        favorite.titleLabel!.font = ColorScheme.pingFang18
-        favorite.setTitleColor(ColorScheme.black, for: .normal)
-        favorite.backgroundColor = ColorScheme.pink
-        favorite.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        favorite.layer.cornerRadius = padding
-        
-        tried.setTitle("Tried", for: .normal)
+        tried.setTitle("Rate", for: .normal)
         tried.titleLabel!.font = ColorScheme.pingFang18
         tried.setTitleColor(ColorScheme.black, for: .normal)
         tried.backgroundColor = ColorScheme.yellow
@@ -67,6 +68,16 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         self.recipeInfoTable.dataSource = self
         self.recipeInfoTable.estimatedRowHeight = 100.0
         self.recipeInfoTable.rowHeight = UITableView.automaticDimension
+    
+        rating.settings.starSize = 30
+        rating.rating = 0
+        rating.settings.updateOnTouch = false
+        
+        numRatings.font = ColorScheme.pingFang18
+        numRatings.text = "0 ratings"
+        
+        userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
+        recipeRef = Database.database().reference()
     }
     
     func tableView(_ tableView: UITableView, numberOfSections numSections: Int) -> Int {
@@ -77,6 +88,14 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         return displayedAttributes.count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == displayedAttributes.count - 1 {
+            print(displayedAttributes[indexPath.row][1])
+            let svc = SFSafariViewController(url: URL(string: displayedAttributes[indexPath.row][1])!)
+            present(svc, animated: true, completion: nil)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = recipeInfoTable.dequeueReusableCell(withIdentifier: "info", for: indexPath) as! RecipeInfoTableViewCell
         
@@ -85,7 +104,12 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         cell.recipeAttribute.font = ColorScheme.pingFang18b
         
         let value: String = displayedAttributes![indexPath.row][1]
-        cell.recipeAttributeValue.text = value
+        if indexPath.row == displayedAttributes.count - 1 {
+            cell.recipeAttributeValue.text = "Link"
+            cell.recipeAttributeValue.textColor = UIColor.blue
+        } else {
+            cell.recipeAttributeValue.text = value
+        }
         cell.recipeAttributeValue.font = ColorScheme.pingFang18
         
         return cell
@@ -95,6 +119,34 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         return UITableView.automaticDimension
     }
 
+    @IBAction func saveRecipe(_ sender: Any) {
+        writeSavedRecipe(id: currRecipe.getId())
+    }
+    
+    @IBAction func rateRecipe(_ sender: Any) {
+//        var rate: CosmosView = CosmosView()
+//        rate.rating = 5
+//        rate.text = "Rate this recipe!"
+//        rate.didTouchCosmos = {
+//            rating in
+//        }
+//        rate.didFinishTouchingCosmos = {
+//            rating in
+//        }
+    }
+    
+    func writeSavedRecipe(id: String) {
+        userRef.child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.hasChildren() {
+                if !snapshot.hasChild(id) {
+                    self.userRef.child("savedRecipes").updateChildValues([id: self.currRecipe.allAttributesDict()])
+                }
+            } else {
+                self.userRef.child("savedRecipes").setValue([id: self.currRecipe.allAttributesDict()])
+            }
+        })
+    }
+    
     /*
     // MARK: - Navigation
 

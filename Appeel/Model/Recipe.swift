@@ -23,6 +23,8 @@ class Recipe {
     private let totalDaily: [NutrientInfo]!
     private let dietLabels: [String]!
     private let healthLabels: [String]!
+    private let url: String!
+    private let recipeId: String!
     
     public init(label: String,
          imgUrl: String,
@@ -35,7 +37,8 @@ class Recipe {
          totalNutrients: [NutrientInfo],
          totalDaily: [NutrientInfo],
          dietLabels: [String],
-         healthLabels: [String]
+         healthLabels: [String],
+         url: String
         ) {
         self.label = label
         self.imgUrl = imgUrl
@@ -49,6 +52,8 @@ class Recipe {
         self.totalDaily = totalDaily
         self.dietLabels = dietLabels
         self.healthLabels = healthLabels
+        self.url = url
+        self.recipeId = UUID().uuidString
     }
     
     public func allAttributes() -> [[String]] {
@@ -60,7 +65,25 @@ class Recipe {
             ["Total Weight (g)", String(self.totalWeight)],
             ["Ingredients", changeListOfObject(lst: self.ingredients).joined(separator: ",\n")],
             ["Diet Labels", self.dietLabels.joined(separator: ",\n")],
-            ["Health Labels", self.healthLabels.joined(separator: ",\n")]
+            ["Health Labels", self.healthLabels.joined(separator: ",\n")],
+            ["Url", self.url]
+        ]
+        return returnedAttributes
+    }
+    
+    public func allAttributesDict() -> [String: String] {
+        let returnedAttributes: [String: String] = [
+            "label": self.label,
+            "imgUrl": self.imgUrl,
+            "Source": self.source,
+            "Servings": String(self.yield),
+            "Calories": String(self.calories),
+            "Total Time (min)": String(self.totalTime),
+            "Total Weight (g)": String(self.totalWeight),
+            "Ingredients": changeListOfObject(lst: self.ingredients).joined(separator: ",\n"),
+            "Diet Labels": self.dietLabels.joined(separator: ",\n"),
+            "Health Labels": self.healthLabels.joined(separator: ",\n"),
+            "Url": self.url
         ]
         return returnedAttributes
     }
@@ -88,6 +111,14 @@ class Recipe {
     
     public func getCalories() -> Float {
         return self.calories
+    }
+    
+    public func getUrl() -> String {
+        return self.url
+    }
+    
+    public func getId() -> String {
+        return self.recipeId
     }
 
 }

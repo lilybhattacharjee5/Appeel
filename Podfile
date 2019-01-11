@@ -4,6 +4,7 @@
 target 'Appeel' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
+  platform :ios, '12.1'
 
   # Pods for Appeel
   pod 'Firebase/Core'
@@ -15,6 +16,7 @@ target 'Appeel' do
   pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
   pod 'Kingfisher'
   pod 'Clarifai'
+  pod 'Cosmos'
 
 end
 

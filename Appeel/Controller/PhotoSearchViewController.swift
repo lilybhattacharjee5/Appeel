@@ -82,12 +82,10 @@ class PhotoSearchViewController: ViewController, UINavigationControllerDelegate,
     }
     
     @IBAction func goToResults(_ sender: Any) {
-        if self.mealPhoto != nil {
+        if self.mealPhoto.image != nil {
             self.performSegue(withIdentifier: "photoResults", sender: sender)
         }
     }
-    
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.

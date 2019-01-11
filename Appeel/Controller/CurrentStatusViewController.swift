@@ -20,12 +20,14 @@ class CurrentStatusViewController: ViewController {
     
     @IBOutlet var logout: UIButton!
     @IBOutlet var viewSaved: UIButton!
-    @IBOutlet var viewFaved: UIButton!
     @IBOutlet var viewTried: UIButton!
     
     @IBOutlet var analyticsList: UITableView!
     
     var ref: DatabaseReference!
+    
+    var nextControllerData: [String: [String: String]]!
+    var nextControllerTitle: String!
 
     var currentUser: UserProfile!
     var email: String!
@@ -68,12 +70,6 @@ class CurrentStatusViewController: ViewController {
         viewSaved.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         viewSaved.layer.cornerRadius = padding
         
-        viewFaved.titleLabel!.font = ColorScheme.pingFang18b
-        viewFaved.setTitleColor(ColorScheme.black, for: .normal)
-        viewFaved.backgroundColor = ColorScheme.pink
-        viewFaved.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        viewFaved.layer.cornerRadius = padding
-        
         viewTried.titleLabel!.font = ColorScheme.pingFang18b
         viewTried.setTitleColor(ColorScheme.black, for: .normal)
         viewTried.backgroundColor = ColorScheme.yellow
@@ -81,7 +77,6 @@ class CurrentStatusViewController: ViewController {
         viewTried.layer.cornerRadius = padding
         
         viewSaved.setTitle("Saved", for: .normal)
-        viewFaved.setTitle("Faved", for: .normal)
         viewTried.setTitle("Tried", for: .normal)
         
         ref = Database.database().reference()
@@ -99,7 +94,26 @@ class CurrentStatusViewController: ViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "viewRecipes" {
+            let myRecipes: MyRecipesViewController = segue.destination as! MyRecipesViewController
+            myRecipes.myRecipesLabelText = self.nextControllerTitle
+            myRecipes.recipeData = self.nextControllerData
+            
+        }
+    }
 
+    @IBAction func getSavedRecipes(_ sender: Any) {
+        ref.child("users").child(Auth.auth().currentUser!.uid).child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.hasChildren() {
+                self.nextControllerData = snapshot.value as? [String: [String: String]] ?? [:]
+                self.nextControllerTitle = "Saved"
+                self.performSegue(withIdentifier: "viewRecipes", sender: sender)
+            }
+        })
+    }
     /*
     // MARK: - Navigation
 
