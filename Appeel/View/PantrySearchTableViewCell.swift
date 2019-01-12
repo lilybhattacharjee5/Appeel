@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used to display food items in the user's virtual pantry to do a pantry-specific search
 class PantrySearchTableViewCell: UITableViewCell {
 
     @IBOutlet var label: UILabel!

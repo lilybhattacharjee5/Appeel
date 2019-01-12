@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used in current status controller to display available usage analytics
 class AnalyticsAvailableTableViewCell: UITableViewCell {
 
     @IBOutlet var analyticsName: UILabel!

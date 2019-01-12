@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// used to display recipe preview in search recipes controller
 class RecipeTableViewCell: UITableViewCell {
     
     @IBOutlet var previewImg: UIImageView!

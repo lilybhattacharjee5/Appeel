@@ -15,25 +15,24 @@ class DietBarViewController: ViewController {
 
     @IBOutlet var barChartView: BarChartView!
     
-    var userRef: DatabaseReference!
-    var recipeRef: DatabaseReference!
+    // maps to firebase database references
+    private var userRef: DatabaseReference!
+    private var recipeRef: DatabaseReference!
     
-    var dietTypes: [String]!
-    var unitsSold: [Double]!
+    // all diet types that can be displayed in the bar chart
+    private var dietTypes: [String] = ["balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        barChartView.noDataText = "You have no saved recipes."
-        barChartView.noDataFont = ColorScheme.pingFang18
+        self.barChartView.noDataText = "You have no saved recipes."
+        self.barChartView.noDataFont = ColorScheme.pingFang18
         
-        userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
-        recipeRef = Database.database().reference().child("recipes")
+        self.userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
+        self.recipeRef = Database.database().reference().child("recipes")
         
-        dietTypes = ["balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
-        
-        barChartUpdate()
+        self.barChartUpdate()
     }
     
     func barChartUpdate() {
@@ -54,7 +53,9 @@ class DietBarViewController: ViewController {
         }
     }
     
+    // returns a dictionary mapping diet types to the number of times they occur in the user's saved recipe list
     func getRecipeData(completionHandler: @escaping ([String: Int]) -> Void) {
+        // accesses user's saved recipe list
         userRef.child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
                 var dietData: [String: Int] = [
@@ -67,18 +68,18 @@ class DietBarViewController: ViewController {
                 ]
                 var userSavedRecipes: [String] = snapshot.value as! [String]
                 for counter in 0..<userSavedRecipes.count {
-                    print(userSavedRecipes[counter])
+                    // gets each recipe id from the saved list and searches for its diet label attribute in the recipe branch
+                    // of the database
                     self.recipeRef.child(userSavedRecipes[counter]).child("Diet Labels").observeSingleEvent(of: .value, with: { (recipeSnapshot) in
                         if recipeSnapshot.exists() {
+                            // diet labels have been concatenated into string form, so this splits them back into an array of strings
                             let splitDietLabels: [String] = (recipeSnapshot.value as! String).components(separatedBy: ", ")
-                            print(splitDietLabels)
                             if (recipeSnapshot.value as! String) != "" {
                                 for label in splitDietLabels {
                                     dietData[label.lowercased()] = dietData[label.lowercased()]! + 1
                                 }
                             }
                         }
-                        print(counter)
                         if counter == userSavedRecipes.count - 1 {
                             completionHandler(dietData)
                         }

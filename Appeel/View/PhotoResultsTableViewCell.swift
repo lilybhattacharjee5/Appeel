@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used to display all matches for ingredients from a photo input into Clarifai's Food Model API
 class PhotoResultsTableViewCell: UITableViewCell {
 
     @IBOutlet var conceptName: UILabel!

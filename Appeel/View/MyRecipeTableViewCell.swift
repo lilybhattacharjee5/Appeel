@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used in my recipe controller to display either saved or rated recipes
 class MyRecipeTableViewCell: UITableViewCell {
 
     @IBOutlet var label: UILabel!

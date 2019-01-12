@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used to display various recipe attributes in recipe zoom controller ex. servings, calories
 class RecipeInfoTableViewCell: UITableViewCell {
 
     @IBOutlet var recipeAttribute: UILabel!

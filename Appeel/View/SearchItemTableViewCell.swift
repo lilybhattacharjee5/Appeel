@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used in search item controller to display all matches from Edamam's Food Search API
 class SearchItemTableViewCell: UITableViewCell {
 
     @IBOutlet var itemLabel: UILabel!

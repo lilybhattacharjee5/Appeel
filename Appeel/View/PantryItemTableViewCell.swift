@@ -8,6 +8,7 @@
 
 import UIKit
 
+// used to display all user pantry items
 class PantryItemTableViewCell: UITableViewCell {
 
     @IBOutlet var itemImage: UIImageView!
