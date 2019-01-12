@@ -21,6 +21,7 @@ class RatingViewController: ViewController {
     
     var imageToRate: UIImage!
     var ref: DatabaseReference!
+    var userRef: DatabaseReference!
     var currRecipe: Recipe!
     
     override func viewDidLoad() {
@@ -49,16 +50,47 @@ class RatingViewController: ViewController {
         submitRating.layer.cornerRadius = padding
         
         ref = Database.database().reference()
+        userRef = ref.child("users").child(Auth.auth().currentUser!.uid)
     }
     
     @IBAction func saveRating(_ sender: Any) {
+        let alert = UIAlertController(title: "Submit Rating", message: "Is your rating final? You will not be able to change it.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.userRef.child("ratedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    if (snapshot.value as? [String: Int] ?? [:])[self.currRecipe.getId()] != nil {
+                        let pastVal: Int = (snapshot.value as? [String: Int] ?? [:])[self.currRecipe.getId()] ?? 0
+                        self.userRef.child("ratedRecipes").updateChildValues([self.currRecipe.getId(): self.myRating.rating])
+                        self.addRating(first: false, past: pastVal)
+                    }
+                } else {
+                    self.userRef.updateChildValues(["ratedRecipes": [self.currRecipe.getId(): self.myRating.rating]])
+                    self.addRating(first: true, past: 0)
+                }
+            })
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    private func addRating(first: Bool, past: Int) {
         ref.child("recipes").observeSingleEvent(of: .value, with: { (snapshot) in
             var dict: [String: Any]
             if snapshot.exists() {
                 if snapshot.childSnapshot(forPath: self.currRecipe.getId()).exists() {
                     let currRating: Double = snapshot.childSnapshot(forPath: self.currRecipe.getId()).childSnapshot(forPath: "rating").value as? Double ?? 0.0
                     let currNum: Double = snapshot.childSnapshot(forPath: self.currRecipe.getId()).childSnapshot(forPath: "numRatings").value as? Double ?? 0.0
-                    dict = ["rating": (currRating * currNum + self.myRating.rating) / (currNum + 1), "numRatings": currNum + 1]
+                    var newRating: Double
+                    var newNum: Double
+                    if first {
+                        newNum = currNum + 1
+                        newRating = (currRating * currNum + self.myRating.rating) / newNum
+                    } else {
+                        newNum = currNum
+                        newRating = (currRating * currNum - Double(past) + self.myRating.rating) / currNum
+                    }
+                    dict = ["rating": newRating, "numRatings": newNum]
                 } else {
                     dict = ["rating": self.myRating.rating, "numRatings": 1]
                 }

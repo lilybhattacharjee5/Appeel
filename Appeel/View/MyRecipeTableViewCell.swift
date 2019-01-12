@@ -12,6 +12,8 @@ class MyRecipeTableViewCell: UITableViewCell {
 
     @IBOutlet var label: UILabel!
     @IBOutlet var recipeImage: UIImageView!
+    @IBOutlet var ratingLabel: UILabel!
+    @IBOutlet var ratingValue: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -101,31 +101,41 @@ class CurrentStatusViewController: ViewController {
             let myRecipes: MyRecipesViewController = segue.destination as! MyRecipesViewController
             myRecipes.myRecipesLabelText = self.nextControllerTitle
             myRecipes.recipeData = self.nextControllerData
-            
         }
     }
-
-    @IBAction func getSavedRecipes(_ sender: Any) {
-        ref.child("users").child(Auth.auth().currentUser!.uid).child("savedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
+    
+    func getRecipes(type: String, title: String, _ sender: Any) {
+        ref.child("users").child(Auth.auth().currentUser!.uid).child(type).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.hasChildren() {
                 var counter = 0
                 var tableData: [String: [String: Any]] = [:]
-                let allRecipeIds: [String] = (snapshot.value as! [String])
+                let allRecipeIds: [String]
+                if type == "ratedRecipes" {
+                    allRecipeIds = Array((snapshot.value as! [String: Int]).keys)
+                } else {
+                    allRecipeIds = (snapshot.value as! [String])
+                }
                 for recipeId in allRecipeIds {
                     self.getRecipe(recipeId: recipeId) { success in
                         tableData[recipeId] = success
                         if counter == allRecipeIds.count - 1 {
-                            print(tableData)
                             self.nextControllerData = tableData
-                            self.nextControllerTitle = "Saved"
+                            self.nextControllerTitle = title
                             self.performSegue(withIdentifier: "viewRecipes", sender: sender)
                         }
                         counter += 1
-                        print(counter)
                     }
                 }
             }
         })
+    }
+    
+    @IBAction func getRatedRecipes(_ sender: Any) {
+        getRecipes(type: "ratedRecipes", title: "Rated", sender)
+    }
+
+    @IBAction func getSavedRecipes(_ sender: Any) {
+        getRecipes(type: "savedRecipes", title: "Saved", sender)
     }
     
     func getRecipe(recipeId: String, completionHandler: @escaping ([String: Any]) -> ()) {

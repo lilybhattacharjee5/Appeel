@@ -1509,6 +1509,9 @@
                                     <constraint firstAttribute="height" constant="35" id="h3K-MX-h8n"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="getRatedRecipes:" destination="NwI-IE-N8P" eventType="touchUpInside" id="gyQ-RK-H8m"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMO-h2-w47">
                                 <rect key="frame" x="166.5" y="338" width="42" height="25"/>
@@ -1610,18 +1613,36 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="krH-KP-eVw">
-                                <rect key="frame" x="20" y="111" width="335" height="487"/>
+                                <rect key="frame" x="0.0" y="111" width="375" height="507"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="myRecipe" rowHeight="114" id="6hY-Mx-MJb" customClass="MyRecipeTableViewCell" customModule="Appeel" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="335" height="114"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="114"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6hY-Mx-MJb" id="HqM-Cn-apQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="113.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="113.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="61U-Ph-zhr">
-                                                    <rect key="frame" x="115" y="5" width="205" height="100"/>
+                                                    <rect key="frame" x="115" y="5" width="160" height="100"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dU-ld-7wc">
+                                                    <rect key="frame" x="305" y="60" width="42" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="qH8-nl-LRD"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4j1-st-OXH">
+                                                    <rect key="frame" x="305" y="10" width="42" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="iTR-lO-3AJ"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1637,8 +1658,12 @@
                                             <constraints>
                                                 <constraint firstItem="wqF-VG-Nmb" firstAttribute="leading" secondItem="HqM-Cn-apQ" secondAttribute="leading" constant="15" id="EuQ-D1-5fW"/>
                                                 <constraint firstItem="61U-Ph-zhr" firstAttribute="centerY" secondItem="wqF-VG-Nmb" secondAttribute="centerY" id="RKE-O4-Z0q"/>
-                                                <constraint firstAttribute="trailing" secondItem="61U-Ph-zhr" secondAttribute="trailing" constant="15" id="iK4-mb-ZFo"/>
+                                                <constraint firstItem="4j1-st-OXH" firstAttribute="leading" secondItem="61U-Ph-zhr" secondAttribute="trailing" constant="30" id="UFG-JK-yTQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="61U-Ph-zhr" secondAttribute="trailing" constant="100" id="iK4-mb-ZFo"/>
+                                                <constraint firstItem="3dU-ld-7wc" firstAttribute="top" secondItem="4j1-st-OXH" secondAttribute="bottom" constant="10" id="ouJ-rv-GsF"/>
                                                 <constraint firstAttribute="bottom" secondItem="wqF-VG-Nmb" secondAttribute="bottom" constant="5" id="pYe-nP-9sI"/>
+                                                <constraint firstItem="4j1-st-OXH" firstAttribute="top" secondItem="HqM-Cn-apQ" secondAttribute="top" constant="10" id="sFv-P0-wK0"/>
+                                                <constraint firstItem="3dU-ld-7wc" firstAttribute="centerX" secondItem="4j1-st-OXH" secondAttribute="centerX" id="vhR-gP-0da"/>
                                                 <constraint firstItem="61U-Ph-zhr" firstAttribute="leading" secondItem="wqF-VG-Nmb" secondAttribute="trailing" constant="10" id="wMU-hQ-Xpr"/>
                                                 <constraint firstItem="wqF-VG-Nmb" firstAttribute="top" secondItem="HqM-Cn-apQ" secondAttribute="top" constant="5" id="xhL-ch-9zk"/>
                                                 <constraint firstItem="61U-Ph-zhr" firstAttribute="height" secondItem="wqF-VG-Nmb" secondAttribute="height" id="yes-2M-cNo"/>
@@ -1646,6 +1671,8 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="61U-Ph-zhr" id="gns-rx-lBT"/>
+                                            <outlet property="ratingLabel" destination="4j1-st-OXH" id="X08-rs-Q9o"/>
+                                            <outlet property="ratingValue" destination="3dU-ld-7wc" id="CAs-8r-4U6"/>
                                             <outlet property="recipeImage" destination="wqF-VG-Nmb" id="nc2-lw-VjG"/>
                                         </connections>
                                     </tableViewCell>
@@ -1655,10 +1682,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="gid-Cz-3oS" firstAttribute="centerX" secondItem="4ZY-Ih-d7b" secondAttribute="centerX" id="Fmn-Fo-Qw4"/>
-                            <constraint firstItem="krH-KP-eVw" firstAttribute="leading" secondItem="4ZY-Ih-d7b" secondAttribute="leading" constant="20" id="KVb-j0-1a9"/>
+                            <constraint firstItem="krH-KP-eVw" firstAttribute="leading" secondItem="4ZY-Ih-d7b" secondAttribute="leading" id="KVb-j0-1a9"/>
                             <constraint firstItem="krH-KP-eVw" firstAttribute="centerX" secondItem="4ZY-Ih-d7b" secondAttribute="centerX" id="LP5-w9-tPT"/>
+                            <constraint firstItem="4ZY-Ih-d7b" firstAttribute="bottom" secondItem="krH-KP-eVw" secondAttribute="bottom" id="avL-rb-LLw"/>
                             <constraint firstItem="krH-KP-eVw" firstAttribute="top" secondItem="gid-Cz-3oS" secondAttribute="bottom" constant="30" id="keP-XI-1i5"/>
-                            <constraint firstItem="4ZY-Ih-d7b" firstAttribute="bottom" secondItem="krH-KP-eVw" secondAttribute="bottom" constant="20" id="lIB-hM-Dra"/>
                             <constraint firstItem="gid-Cz-3oS" firstAttribute="top" secondItem="4ZY-Ih-d7b" secondAttribute="top" constant="40" id="pzw-7N-LHM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4ZY-Ih-d7b"/>

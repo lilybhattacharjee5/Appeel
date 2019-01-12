@@ -8,6 +8,8 @@
 
 import UIKit
 import SafariServices
+import FirebaseDatabase
+import FirebaseAuth
 
 class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,6 +18,9 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
     var myRecipesLabelText: String!
     var recipeData: [String: [String: Any]]!
     var tableData: [[String: Any]] = []
+    var ids: [String] = []
+    
+    var userRef: DatabaseReference!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +35,14 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         
         for (key, val) in recipeData {
             tableData.append(val)
+            ids.append(key)
         }
+        
+        userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        myRecipes.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,6 +55,16 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         cell.label.text = tableData[indexPath.row]["label"] as? String ?? ""
         cell.label.font = ColorScheme.pingFang20
         cell.label.numberOfLines = 3
+        
+        cell.ratingLabel.text = "YOU"
+        cell.ratingLabel.font = ColorScheme.pingFang18b
+        
+        if tableData[indexPath.row]["rating"] != nil {
+            cell.ratingValue.text = String(format: "%@", tableData[indexPath.row]["rating"] as! CVarArg)
+        } else {
+            cell.ratingValue.text = "?"
+        }
+        cell.ratingValue.font = ColorScheme.pingFang18b
         
         let stringUrl: String = tableData[indexPath.row]["imgUrl"] as? String ?? ""
         let url = URL(string: stringUrl)
@@ -59,6 +81,20 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         let url: String = tableData[indexPath.row]["Url"] as? String ?? ""
         let svc = SFSafariViewController(url: URL(string: url)!)
         present(svc, animated: true, completion: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if tableData[indexPath.row]["rating"] == nil {
+            let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+                // delete item at indexPath
+                self.recipeData.removeValue(forKey: self.ids[indexPath.row])
+                self.ids.remove(at: indexPath.row)
+                self.myRecipes.deleteRows(at: [indexPath], with: .fade)
+                self.userRef.updateChildValues(["savedRecipes": self.ids])
+            }
+            return [delete]
+        }
+        return []
     }
 
     /*
