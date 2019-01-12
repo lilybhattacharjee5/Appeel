@@ -26,6 +26,7 @@ class Recipe {
     private let url: String!
     private let recipeId: String!
     
+    // initializes recipe object
     public init(label: String,
          imgUrl: String,
          source: String,
@@ -56,11 +57,13 @@ class Recipe {
         self.recipeId = Recipe.createId(url: url)
     }
     
+    // creates unique & repeatable id from url by removing forbidden characters
     private static func createId(url: String) -> String {
         let id = (url).components(separatedBy: [".", "$", "[", "]", "#", "/"]).joined(separator: "")
         return id
     }
     
+    // obtain all attributes & values in array form
     public func allAttributes() -> [[String]] {
         let returnedAttributes: [[String]] = [
             ["Source", self.source],
@@ -76,6 +79,7 @@ class Recipe {
         return returnedAttributes
     }
     
+    // obtain all attributes & values in dictionary form
     public func allAttributesDict() -> [String: String] {
         let returnedAttributes: [String: String] = [
             "label": self.label,
@@ -93,6 +97,7 @@ class Recipe {
         return returnedAttributes
     }
     
+    // convert all elements in a given list into string types
     private func changeListOfObject(lst: [CustomStringConvertible]) -> [String] {
         var returnedLst: [String] = []
         for elem in lst {

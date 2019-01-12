@@ -10,11 +10,13 @@ import Foundation
 
 class UserProfile {
     
+    // user properties
     let email: String!
     var firstName: String!
     var lastName: String!
     var imgCounter: Int!
     
+    // initializes new user profile
     init(email: String, firstName: String, lastName: String, imgCounter: Int) {
         self.email = email
         self.firstName = firstName
@@ -22,6 +24,7 @@ class UserProfile {
         self.imgCounter = imgCounter
     }
     
+    // returns all user profile properties as a dictionary
     func toDict() -> [String: String] {
         return [
             "email": self.email,

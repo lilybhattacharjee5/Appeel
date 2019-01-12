@@ -9,8 +9,10 @@
 import UIKit
 import Foundation
 
+// items input by the user into their virtual pantry
 class PantryItem {
     
+    // label and brand come from selected food item in search controller
     private var image: UIImage!
     private var label: String!
     private var brand: String!
