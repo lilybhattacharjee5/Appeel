@@ -184,6 +184,7 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
             let ratingController: RatingViewController = segue.destination as! RatingViewController
             ratingController.imageToRate = recipeImg.image
             ratingController.currRecipe = currRecipe
+            ratingController.recipeNameText = currRecipe.getLabel()
         }
     }
     

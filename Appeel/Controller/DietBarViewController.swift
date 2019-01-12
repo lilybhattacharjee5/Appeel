@@ -11,6 +11,7 @@ import Charts
 import FirebaseDatabase
 import FirebaseAuth
 
+// displays a bar chart for the number of times a recipe the user saved corresponded to a particular diet routine
 class DietBarViewController: ViewController {
 
     @IBOutlet var barChartView: BarChartView!
