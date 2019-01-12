@@ -13,6 +13,7 @@ class ColorScheme {
     
     // fonts
     public static let pingFang50 = UIFont(name: "PingFangSC-Ultralight", size: 50.0)
+    public static let pingFang24b = UIFont(name: "PingFangSC-Light", size: 24.0)
     public static let pingFang24 = UIFont(name: "PingFangSC-Ultralight", size: 24.0)
     public static let pingFang20 = UIFont(name: "PingFangSC-Ultralight", size: 20.0)
     public static let pingFang18 = UIFont(name: "PingFangSC-Ultralight", size: 18.0)

@@ -17,6 +17,8 @@ target 'Appeel' do
   pod 'Kingfisher'
   pod 'Clarifai'
   pod 'Cosmos'
+  pod 'Charts'
+  pod 'ChartsRealm'
 
 end
 

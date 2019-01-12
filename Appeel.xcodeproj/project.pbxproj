@@ -24,6 +24,9 @@
 		7061CAE821E8CD47002EE2F9 /* MyRecipesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061CAE721E8CD47002EE2F9 /* MyRecipesViewController.swift */; };
 		7061CAEA21E8CD5D002EE2F9 /* MyRecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061CAE921E8CD5D002EE2F9 /* MyRecipeTableViewCell.swift */; };
 		7061CAEC21E8E4F4002EE2F9 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061CAEB21E8E4F4002EE2F9 /* RatingViewController.swift */; };
+		7061CAF021E9E5F6002EE2F9 /* AnalyticsAvailableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061CAEF21E9E5F6002EE2F9 /* AnalyticsAvailableTableViewCell.swift */; };
+		7061CAF221E9EC8E002EE2F9 /* RatingsPieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061CAF121E9EC8E002EE2F9 /* RatingsPieViewController.swift */; };
+		7061CAF421EA03E7002EE2F9 /* DietBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061CAF321EA03E7002EE2F9 /* DietBarViewController.swift */; };
 		70A405E921DF2E52001D280A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A405E821DF2E52001D280A /* AppDelegate.swift */; };
 		70A405EB21DF2E52001D280A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A405EA21DF2E52001D280A /* ViewController.swift */; };
 		70A405EE21DF2E52001D280A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70A405EC21DF2E52001D280A /* Main.storyboard */; };
@@ -66,6 +69,9 @@
 		7061CAE721E8CD47002EE2F9 /* MyRecipesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipesViewController.swift; sourceTree = "<group>"; };
 		7061CAE921E8CD5D002EE2F9 /* MyRecipeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipeTableViewCell.swift; sourceTree = "<group>"; };
 		7061CAEB21E8E4F4002EE2F9 /* RatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
+		7061CAEF21E9E5F6002EE2F9 /* AnalyticsAvailableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsAvailableTableViewCell.swift; sourceTree = "<group>"; };
+		7061CAF121E9EC8E002EE2F9 /* RatingsPieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsPieViewController.swift; sourceTree = "<group>"; };
+		7061CAF321EA03E7002EE2F9 /* DietBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietBarViewController.swift; sourceTree = "<group>"; };
 		70A405E521DF2E52001D280A /* Appeel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Appeel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70A405E821DF2E52001D280A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70A405EA21DF2E52001D280A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +178,7 @@
 				70ADF65721E63DD1008F07A2 /* SearchItemTableViewCell.swift */,
 				701CDCC621E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift */,
 				7061CAE921E8CD5D002EE2F9 /* MyRecipeTableViewCell.swift */,
+				7061CAEF21E9E5F6002EE2F9 /* AnalyticsAvailableTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -198,6 +205,8 @@
 				701CDCC221E80E0300C5A7B6 /* IngredientChoicesViewController.swift */,
 				7061CAE721E8CD47002EE2F9 /* MyRecipesViewController.swift */,
 				7061CAEB21E8E4F4002EE2F9 /* RatingViewController.swift */,
+				7061CAF121E9EC8E002EE2F9 /* RatingsPieViewController.swift */,
+				7061CAF321EA03E7002EE2F9 /* DietBarViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -314,11 +323,15 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Appeel/Pods-Appeel-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/ChartsRealm/ChartsRealm.framework",
 				"${BUILT_PRODUCTS_DIR}/Clarifai/Clarifai.framework",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -330,11 +343,15 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChartsRealm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Clarifai.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
@@ -355,6 +372,7 @@
 				70DC443A21E16672006A5391 /* AccountTabViewController.swift in Sources */,
 				7061CAEA21E8CD5D002EE2F9 /* MyRecipeTableViewCell.swift in Sources */,
 				701CDCBF21E78CB100C5A7B6 /* PantrySearchTableViewCell.swift in Sources */,
+				7061CAF021E9E5F6002EE2F9 /* AnalyticsAvailableTableViewCell.swift in Sources */,
 				7034AB2B21E2D26F0014EDD8 /* ColorScheme.swift in Sources */,
 				7034AB2D21E4576A0014EDD8 /* NutrientInfo.swift in Sources */,
 				70F3B08021DFF9AE00D8B062 /* AboutViewController.swift in Sources */,
@@ -365,6 +383,7 @@
 				70F3B08421E06EA800D8B062 /* PageViewController.swift in Sources */,
 				701CDCC721E83A9B00C5A7B6 /* PhotoResultsTableViewCell.swift in Sources */,
 				70F3B07C21DFF98C00D8B062 /* LoginViewController.swift in Sources */,
+				7061CAF221E9EC8E002EE2F9 /* RatingsPieViewController.swift in Sources */,
 				7034AB2F21E457810014EDD8 /* Ingredient.swift in Sources */,
 				70DC443821E1656E006A5391 /* SearchRecipesViewController.swift in Sources */,
 				7034AB3321E559EB0014EDD8 /* GeneralSearchViewController.swift in Sources */,
@@ -375,6 +394,7 @@
 				70DC443221E1411B006A5391 /* UserProfile.swift in Sources */,
 				7061CAEC21E8E4F4002EE2F9 /* RatingViewController.swift in Sources */,
 				701CDCC321E80E0300C5A7B6 /* IngredientChoicesViewController.swift in Sources */,
+				7061CAF421EA03E7002EE2F9 /* DietBarViewController.swift in Sources */,
 				70CAEC1C21E1A14100FAA12A /* Recipe.swift in Sources */,
 				70DC443621E1655A006A5391 /* VirtualPantryViewController.swift in Sources */,
 				70ADF65421E5FBA8008F07A2 /* PantryItemTableViewCell.swift in Sources */,

@@ -54,7 +54,7 @@ class RatingViewController: ViewController {
     }
     
     @IBAction func saveRating(_ sender: Any) {
-        let alert = UIAlertController(title: "Submit Rating", message: "Is your rating final? You will not be able to change it.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Submit Rating", message: "Would you like to submit this rating?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             self.userRef.child("ratedRecipes").observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.exists() {
@@ -62,6 +62,9 @@ class RatingViewController: ViewController {
                         let pastVal: Int = (snapshot.value as? [String: Int] ?? [:])[self.currRecipe.getId()] ?? 0
                         self.userRef.child("ratedRecipes").updateChildValues([self.currRecipe.getId(): self.myRating.rating])
                         self.addRating(first: false, past: pastVal)
+                    } else {
+                        self.userRef.child("ratedRecipes").updateChildValues([self.currRecipe.getId(): self.myRating.rating])
+                        self.addRating(first: true, past: 0)
                     }
                 } else {
                     self.userRef.updateChildValues(["ratedRecipes": [self.currRecipe.getId(): self.myRating.rating]])
@@ -90,7 +93,7 @@ class RatingViewController: ViewController {
                         newNum = currNum
                         newRating = (currRating * currNum - Double(past) + self.myRating.rating) / currNum
                     }
-                    dict = ["rating": newRating, "numRatings": newNum]
+                    dict = ["rating": newRating, "numRatings": currNum + 1]
                 } else {
                     dict = ["rating": self.myRating.rating, "numRatings": 1]
                 }

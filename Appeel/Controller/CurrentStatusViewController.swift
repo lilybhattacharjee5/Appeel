@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class CurrentStatusViewController: ViewController {
+class CurrentStatusViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var welcomeLabel: UILabel!
     @IBOutlet var accountNameLabel: UILabel!
@@ -34,6 +34,9 @@ class CurrentStatusViewController: ViewController {
     var firstName: String!
     var lastName: String!
     var imgCounter: Int!
+    var analyticsAvailable: [String] = ["My Ratings",
+                                        "Diet Labels (Saved)"
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,10 +52,10 @@ class CurrentStatusViewController: ViewController {
         self.accountNameLabel.textAlignment = .right
         
         self.recipesLabel.text = "My Recipes"
-        self.recipesLabel.font = ColorScheme.pingFang24
+        self.recipesLabel.font = ColorScheme.pingFang24b
         
         self.analyticsLabel.text = "My Analytics"
-        self.analyticsLabel.font = ColorScheme.pingFang24
+        self.analyticsLabel.font = ColorScheme.pingFang24b
         
         let padding: CGFloat = 7.0
         let borderRadius: CGFloat = 5.0
@@ -91,6 +94,33 @@ class CurrentStatusViewController: ViewController {
             self.accountNameLabel.text = self.firstName + "."
         }) { (error) in
             print(error.localizedDescription)
+        }
+        
+        analyticsList.delegate = self
+        analyticsList.dataSource = self
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return analyticsAvailable.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: AnalyticsAvailableTableViewCell = analyticsList.dequeueReusableCell(withIdentifier: "analytics") as! AnalyticsAvailableTableViewCell
+        cell.analyticsName.text = analyticsAvailable[indexPath.row]
+        cell.analyticsName.font = ColorScheme.pingFang18
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+            case 0:
+                performSegue(withIdentifier: "ratingsChart", sender: nil)
+            case 1:
+                performSegue(withIdentifier: "dietChart", sender: nil)
+            case 2:
+                performSegue(withIdentifier: "caloriesChart", sender: nil)
+            default:
+                performSegue(withIdentifier: "ratingsChart", sender: nil)
         }
     }
     
@@ -144,6 +174,7 @@ class CurrentStatusViewController: ViewController {
             completionHandler(recipeSnapshot.value as? [String: Any] ?? [:])
         })
     }
+    
     /*
     // MARK: - Navigation
 
