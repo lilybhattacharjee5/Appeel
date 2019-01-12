@@ -20,23 +20,27 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet var addItem: UIButton!
     @IBOutlet var pantryItems: UITableView!
     
+    // keeps track of displayed pantry item data (for tableview)
     var pantryItemData: [[String: Any]]!
-    var imageData: [UIImage]!
+    private var imageData: [UIImage]!
     
-    var userRef: DatabaseReference!
-    var storageRef: StorageReference!
+    // firebase database references
+    private var userRef: DatabaseReference!
+    private var storageRef: StorageReference!
+    
+    private let padding: CGFloat = 7.0
+    private let borderRadius: CGFloat = 5.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // format title label
         self.virtualPantryLabel.text = "Virtual Pantry"
         self.virtualPantryLabel.textColor = ColorScheme.red
         self.virtualPantryLabel.font = ColorScheme.cochinItalic60
         
-        let padding: CGFloat = 7.0
-        let borderRadius: CGFloat = 5.0
-        
+        // format add item button
         self.addItem.setTitle("+", for: .normal)
         self.addItem.setTitleColor(ColorScheme.black, for: .normal)
         self.addItem.layer.cornerRadius = borderRadius
@@ -44,12 +48,14 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         self.addItem.titleLabel!.font = ColorScheme.pingFang24
         self.addItem.backgroundColor = ColorScheme.green
         
+        // initialize firebase database references
         userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
         storageRef = Storage.storage().reference().child("users").child(Auth.auth().currentUser!.uid)
         
         self.pantryItems.delegate = self
         self.pantryItems.dataSource = self
         
+        // populate pantry with items from database access (user branch)
         populatePantry()
     }
     
@@ -60,6 +66,7 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
+    // get all pantry item info stored in database (+ attributes like brand)
     private func getPantryData(completionHandler: @escaping ([[String: Any]]) -> Void) {
         userRef.child("pantryItems").observeSingleEvent(of: .value, with: { (snapshot) in
             var allPantryData: [[String: Any]]
@@ -87,13 +94,19 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         return pantryItemData.count
     }
     
+    // populates each pantry item cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = pantryItems.dequeueReusableCell(withIdentifier: "pantry") as! PantryItemTableViewCell
+        
+        // formats item name
         cell.itemName.text = pantryItemData[indexPath.row]["label"] as? String ?? ""
         cell.itemName.font = ColorScheme.pingFang18b
+        
+        // formats item brand
         cell.itemBrand.text = pantryItemData[indexPath.row]["brand"] as? String ?? ""
         cell.itemBrand.font = ColorScheme.pingFang18
         
+        // accesses image data from firebase storage
         let currImgUrl = pantryItemData[indexPath.row]["image"] as? String ?? ""
         if currImgUrl != "" {
             let imageRef = storageRef.child(currImgUrl)
@@ -104,6 +117,7 @@ class VirtualPantryViewController: UIViewController, UITableViewDelegate, UITabl
         return cell
     }
     
+    // if a cell is deleted, the item is removed from firebase pantry items corresponding to current user
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             self.pantryItemData.remove(at: indexPath.row)

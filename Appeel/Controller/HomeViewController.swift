@@ -16,22 +16,26 @@ class HomeViewController: UIViewController {
     @IBOutlet var about: UIButton!
     @IBOutlet var miniLogo: UIImageView!
     
-    let padding: CGFloat = 50.0
-    let borderRadius: CGFloat = 20.0
+    private let padding: CGFloat = 50.0
+    private let borderRadius: CGFloat = 20.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // populate all button text
         logIn.setTitle("Log In", for: .normal)
         signUp.setTitle("Sign Up", for: .normal)
         about.setTitle("About", for: .normal)
         
+        // loads logo image
         miniLogo.image = UIImage(named: "apple.png")
         
+        // populates app name text
         appName.font = ColorScheme.cochinItalic60
         appName.textColor = ColorScheme.red
         
+        // formats all buttons
         logIn.backgroundColor = ColorScheme.green
         logIn.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         logIn.layer.cornerRadius = borderRadius
@@ -51,15 +55,17 @@ class HomeViewController: UIViewController {
         about.setTitleColor(ColorScheme.black, for: .normal)
     }
     
+    // called when login button is pressed
     @IBAction func loginSegue(_ sender: Any) {
         performSegue(withIdentifier: "logIn", sender: sender)
     }
     
+    // called when signup button is pressed
     @IBAction func signUpSegue(_ sender: Any) {
         performSegue(withIdentifier: "signUp", sender: sender)
     }
     
-    
+    // called when about button is pressed
     @IBAction func aboutSegue(_ sender: Any) {
         performSegue(withIdentifier: "about", sender: sender)
     }

@@ -13,29 +13,34 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 
+// allows the user to search for a food item that can be entered into the virtual pantry
 class SearchItemViewController: ViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     @IBOutlet var searchItemLabel: UILabel!
     @IBOutlet var searchItemControl: UISearchBar!
     @IBOutlet var searchItemResults: UITableView!
     
-    var searchController: UISearchController!
-    var searchResults: [[String: Any]]!
+    private var searchController: UISearchController!
+    private var searchResults: [[String: Any]]! // helps populate search results
     
     var newPantryItem: PantryItem!
     
-    private let appId: String = "a45d2060"
-    private let appKey: String = "273ebdd46ede074bc43ae62ebee89d0f"
+    // access keys for Edamam's Food API
+    private let appId: String = ApiKeys.getEdamamFoodAppId()
+    private let appKey: String = ApiKeys.getEdamamFoodAppKey()
     
+    // firebase database references
     var userRef: DatabaseReference!
     var storageRef: StorageReference!
     
-    let uid = Auth.auth().currentUser!.uid
+    // get current user id
+    private let uid = Auth.auth().currentUser!.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats title label
         self.searchItemLabel.text = "Search Item"
         self.searchItemLabel.font = ColorScheme.cochinItalic50
         self.searchItemLabel.textColor = ColorScheme.red
@@ -47,15 +52,16 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         self.searchItemResults.delegate = self
         self.searchItemResults.dataSource = self
         
+        // initializes database references
         userRef = Database.database().reference().child("users").child(uid)
         storageRef = Storage.storage().reference().child("users").child(uid)
     }
     
+    // accesses first page of search results using Edamam's Food API
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let searched: String = searchItemControl.text ?? ""
         if searched != "" {
-            //let finalUrl = genUrl(searchParam: searched)
-            let finalUrl = "https://api.myjson.com/bins/gpavk"
+            let finalUrl = genUrl(searchParam: searched)
             self.searchResults = []
             print(finalUrl)
             AF.request(finalUrl).responseJSON { response in
@@ -91,6 +97,7 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         return searchResults.count
     }
     
+    // populates search result cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchItemResults.dequeueReusableCell(withIdentifier: "result", for: indexPath) as! SearchItemTableViewCell
         var currRowData: [String: Any] = searchResults[indexPath.row]
@@ -111,6 +118,7 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         return cell
     }
     
+    // generates a url for the API based on the query entered into the search bar
     private func genUrl(searchParam: String) -> String {
         let splitParam: [String] = searchParam.components(separatedBy: [" "])
         var finalUrl = "https://api.edamam.com/api/food-database/parser?ingr="
@@ -131,6 +139,7 @@ class SearchItemViewController: ViewController, UITableViewDelegate, UITableView
         performSegue(withIdentifier: "goToPantry", sender: nil)
     }
     
+    // updates pantry with newly added item
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.

@@ -11,21 +11,29 @@ import SafariServices
 import FirebaseDatabase
 import FirebaseAuth
 
+// allows user to view recipes they have saved or rated and some basic information about those recipes
 class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var myRecipesLabel: UILabel!
     @IBOutlet var myRecipes: UITableView!
-    var myRecipesLabelText: String!
-    var recipeData: [String: [String: Any]]!
-    var tableData: [[String: Any]] = []
-    var ids: [String] = []
     
-    var userRef: DatabaseReference!
+    var myRecipesLabelText: String!
+    
+    // helps populate the recipe table by holding data from the firebase database
+    var recipeData: [String: [String: Any]]!
+    private var tableData: [[String: Any]] = []
+    
+    // keeps track of recipe ids
+    private var ids: [String] = []
+    
+    // firebase database reference
+    private var userRef: DatabaseReference!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats title label
         myRecipesLabel.textColor = ColorScheme.red
         myRecipesLabel.font = ColorScheme.cochinItalic50
         myRecipesLabel.text = myRecipesLabelText
@@ -33,11 +41,13 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         myRecipes.delegate = self
         myRecipes.dataSource = self
         
+        // using data passed through the segue, splits into recipe id and attribute data
         for (key, val) in recipeData {
             tableData.append(val)
             ids.append(key)
         }
         
+        // initializes database reference
         userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
     }
     
@@ -49,13 +59,16 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         return recipeData.count
     }
     
+    // called to populate recipe display table cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: MyRecipeTableViewCell = myRecipes.dequeueReusableCell(withIdentifier: "myRecipe", for: indexPath) as! MyRecipeTableViewCell
         
+        // name of recipe
         cell.label.text = tableData[indexPath.row]["label"] as? String ?? ""
         cell.label.font = ColorScheme.pingFang20
         cell.label.numberOfLines = 3
         
+        // displays user's rating of the recipe, if it exists
         cell.ratingLabel.text = "YOU"
         cell.ratingLabel.font = ColorScheme.pingFang18b
         
@@ -66,6 +79,7 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         }
         cell.ratingValue.font = ColorScheme.pingFang18b
         
+        // obtains image from internet corresponding to recipe
         let stringUrl: String = tableData[indexPath.row]["imgUrl"] as? String ?? ""
         let url = URL(string: stringUrl)
         
@@ -77,12 +91,16 @@ class MyRecipesViewController: ViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
+    // displays recipe directions from source website when the table cell is clicked
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let url: String = tableData[indexPath.row]["Url"] as? String ?? ""
-        let svc = SFSafariViewController(url: URL(string: url)!)
-        present(svc, animated: true, completion: nil)
+        if tableData[indexPath.row]["Url"] != nil {
+            let url: String = tableData[indexPath.row]["Url"] as? String ?? ""
+            let svc = SFSafariViewController(url: URL(string: url)!)
+            present(svc, animated: true, completion: nil)
+        }
     }
     
+    // removes cell & recipe from database if user swipes left and presses delete
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if tableData[indexPath.row]["rating"] == nil {
             let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in

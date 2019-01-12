@@ -21,40 +21,47 @@ class LoginViewController: UIViewController {
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     
+    private let borderRadius: CGFloat = 10.0
+    private let padding: CGFloat = 20.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // populates all text label text
         loginLabel.text = "Login"
         emailLabel.text = "Email"
         passwordLabel.text = "Password"
+        
+        // populates all button text
         loginButton.setTitle("Log In", for: .normal)
         backButton.setTitle("", for: .normal)
         backButton.setImage(PageViewController.backButtonImg, for: .normal)
         passwordTextField.isSecureTextEntry = true
         
+        // formats text labels
         loginLabel.font = ColorScheme.cochinItalic60
         loginLabel.textColor = ColorScheme.red
         
         emailLabel.font = ColorScheme.pingFang20
         passwordLabel.font = ColorScheme.pingFang20
         
+        // format text fields
         emailTextField.font = ColorScheme.pingFang18
         passwordTextField.font = ColorScheme.pingFang18
         
-        let borderRadius: CGFloat = 10.0
-        let padding: CGFloat = 20.0
-        
+        // format buttons
         loginButton.backgroundColor = ColorScheme.green
         loginButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         loginButton.layer.cornerRadius = borderRadius
         loginButton.titleLabel!.font = ColorScheme.pingFang24
         loginButton.setTitleColor(ColorScheme.black, for: .normal)
         
+        // allows user to tap the screen to dismiss the keyboard
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
-    
+    // uses firebase email / password authentication to log in the user if they have an account
     @IBAction func logIn(_ sender: Any) {
         guard let email: String = emailTextField.text else { return }
         guard let password: String = passwordTextField.text else { return }

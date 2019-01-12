@@ -8,6 +8,7 @@
 
 import UIKit
 
+// contains back button img for use in other view controllers
 class PageViewController: UIViewController {
     
     static let backButtonImg: UIImage = UIImage(named: "back-button")!

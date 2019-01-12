@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
+// sets appearances & names of tab bar items for user account
 class AccountTabBarController: UITabBarController {
     
     @IBOutlet var accountTabBar: UITabBar!

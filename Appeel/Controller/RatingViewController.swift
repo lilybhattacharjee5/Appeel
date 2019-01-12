@@ -30,7 +30,7 @@ class RatingViewController: ViewController {
     var ref: DatabaseReference! // general ref (both users & recipes are children)
     var userRef: DatabaseReference!
     
-    let padding: CGFloat = 10.0
+    private let padding: CGFloat = 10.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,8 +124,8 @@ class RatingViewController: ViewController {
             } else {
                 dict = ["rating": self.myRating.rating, "numRatings": 1]
                 self.ref.child("recipes").setValue([self.currRecipe.getId(): dict]) // adds new recipe to recipe data tree
-                self.ref.child("recipes").child(self.currRecipe.getId()).updateChildValues(self.currRecipe.allAttributesDict()) // adds all other recipe attributes
             }
+            self.ref.child("recipes").child(self.currRecipe.getId()).updateChildValues(self.currRecipe.allAttributesDict()) // adds all other recipe attributes
         })
     }
 

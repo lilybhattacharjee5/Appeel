@@ -10,6 +10,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import UIKit
 
+// allows user to perform a general search with parameters limited to items they have in their pantry
 class PantrySearchViewController: ViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet var goBack: UIButton!
@@ -17,28 +18,34 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
     @IBOutlet var pantrySearchLabel: UILabel!
     @IBOutlet var pantrySearchItems: UITableView!
     
-    var query: String!
+    // keeps track of query to send to general search controller
+    private var query: String!
     
-    var userRef: DatabaseReference!
+    // firebase database reference
+    private var userRef: DatabaseReference!
     
-    var selectedCells: [PantrySearchTableViewCell] = []
+    private var selectedCells: [PantrySearchTableViewCell] = [] // tracks selected pantry items
     
-    var pantryItemData: [[String: Any]]!
+    private let padding: CGFloat = 7.0
+    private let borderRadius: CGFloat = 5.0
+    
+    // holds database information re what current user has in their virtual pantry
+    private var pantryItemData: [[String: Any]]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats go back button
         goBack.setTitle("", for: .normal)
         goBack.setBackgroundImage(UIImage(named: "back-button.png"), for: .normal)
         
+        // formats title label
         pantrySearchLabel.text = "Pantry Search"
         pantrySearchLabel.textColor = ColorScheme.red
         pantrySearchLabel.font = ColorScheme.cochinItalic50
         
-        let padding: CGFloat = 7.0
-        let borderRadius: CGFloat = 5.0
-        
+        // formats next to general controller button
         self.nextGeneral.setTitle(">", for: .normal)
         self.nextGeneral.setTitleColor(ColorScheme.black, for: .normal)
         self.nextGeneral.layer.cornerRadius = borderRadius
@@ -46,17 +53,21 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         self.nextGeneral.titleLabel!.font = ColorScheme.pingFang24
         self.nextGeneral.backgroundColor = ColorScheme.blue
         
+        // initializes query as an empty string
         query = ""
         
         pantrySearchItems.delegate = self
         pantrySearchItems.dataSource = self
         pantrySearchItems.allowsMultipleSelection = true
         
+        // initializes firebase database reference
         userRef = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
         
+        // populates the table with all items from the virtual pantry
         populatePantryItems()
     }
     
+    // get data from the user's virtual pantry as stored on the firebase database
     private func populatePantryItems() {
         getPantryData() { response in
             self.pantryItemData = response
@@ -76,6 +87,7 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         })
     }
     
+    // sends the query via segue to the general controller to pre-populate the query field
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
@@ -85,6 +97,7 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         }
     }
     
+    // segues to general controller when the next button is pressed
     @IBAction func goToGeneral(_ sender: Any) {
         self.query = composeQuery()
         print(query)
@@ -93,6 +106,7 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         }
     }
     
+    // composes the query by concatenating pantry item names with spaces
     private func composeQuery() -> String {
         var returnedQuery: String = ""
         var counter = 0
@@ -123,20 +137,26 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = pantrySearchItems.dequeueReusableCell(withIdentifier: "pantry") as! PantrySearchTableViewCell
+        
+        // pantry item label
         cell.label.text = pantryItemData[indexPath.row]["label"] as? String ?? ""
         cell.label.font = ColorScheme.pingFang18b
+        
+        // pantry item brand
         cell.brand.text = pantryItemData[indexPath.row]["brand"] as? String ?? ""
         cell.brand.font = ColorScheme.pingFang18
         
         return cell
     }
     
+    // highlight cell in pink if selected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCell:UITableViewCell = pantrySearchItems.cellForRow(at: indexPath as IndexPath)!
         selectedCell.contentView.backgroundColor = ColorScheme.pink
         selectedCells.append(selectedCell as! PantrySearchTableViewCell)
     }
     
+    // remove highlighting from cell if deselected
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cellToDeSelect:UITableViewCell = pantrySearchItems.cellForRow(at: indexPath)!
         cellToDeSelect.contentView.backgroundColor = UIColor.clear

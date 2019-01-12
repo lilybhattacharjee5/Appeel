@@ -13,6 +13,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import SafariServices
 
+// displays the selected recipe with all of its attributes ex. preparation time, num of servings, etc.
 class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var rating: CosmosView!
@@ -24,36 +25,42 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
     @IBOutlet var recipeInfoTable: UITableView!
     @IBOutlet var numRatings: UILabel!
     
-    var currRecipe: Recipe!
-    var displayedAttributes: [[String]]!
+    var currRecipe: Recipe! // current recipe being displayed
+    var displayedAttributes: [[String]]! // holds attributes of current recipe to populate tableview
     
-    var ref: DatabaseReference!
-    var userRef: DatabaseReference!
-    var recipeRef: DatabaseReference!
+    // firebase database reference
+    private var ref: DatabaseReference!
+    private var userRef: DatabaseReference!
+    private var recipeRef: DatabaseReference!
     
+    // keeps track of rating of current recipe
     var ratingVal: Double!
     var numRatingsVal: Double!
+    
+    private let padding: CGFloat = 5.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats go back button
         goBack.setTitle("", for: .normal)
         goBack.setBackgroundImage(UIImage(named: "back-button.png"), for: .normal)
         
+        // formats title label
         recipeName.text = currRecipe.getLabel()
         recipeName.font = ColorScheme.pingFang20
         recipeName.textAlignment = .center
         recipeName.lineBreakMode = .byWordWrapping
         recipeName.numberOfLines = 2
         
+        // formats recipe image
         let url = URL(string: currRecipe.getImgUrl())
         recipeImg.kf.setImage(with: url)
         recipeImg.layer.masksToBounds = true
         recipeImg.layer.cornerRadius = 7.0
         
-        let padding: CGFloat = 5.0
-        
+        // formats save button
         save.setTitle("Save", for: .normal)
         save.titleLabel!.font = ColorScheme.pingFang18
         save.setTitleColor(ColorScheme.black, for: .normal)
@@ -61,6 +68,7 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         save.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         save.layer.cornerRadius = padding
         
+        // formats rate button
         tried.setTitle("Rate", for: .normal)
         tried.titleLabel!.font = ColorScheme.pingFang18
         tried.setTitleColor(ColorScheme.black, for: .normal)
@@ -73,10 +81,12 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         self.recipeInfoTable.estimatedRowHeight = 100.0
         self.recipeInfoTable.rowHeight = UITableView.automaticDimension
         
+        // initializes firebase database references
         ref = Database.database().reference()
         userRef = ref.child("users").child(Auth.auth().currentUser!.uid)
         recipeRef = Database.database().reference()
         
+        // gets recipe rating from firebase database, formats displayed stars
         getRating(id: currRecipe.getId())
     
         rating.settings.fillMode = .precise
@@ -88,6 +98,7 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         numRatings.numberOfLines = 2
     }
     
+    // tableview methods help populate table of displayed recipe attributes
     func tableView(_ tableView: UITableView, numberOfSections numSections: Int) -> Int {
         return 1
     }
@@ -104,6 +115,7 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         }
     }
     
+    // accesses recipe rating from recipe branch of firebase database
     func getRating(id: String) {
         ref.child("recipes").observeSingleEvent(of: .value, with: { (snapshot) in
             if !snapshot.exists() {
@@ -147,14 +159,17 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         return cell
     }
     
+    // allow variable heights of cells (useful for ingredients row)
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 
+    // called when save button is pressed
     @IBAction func saveRecipe(_ sender: Any) {
         writeSavedRecipe(id: currRecipe.getId())
     }
     
+    // writes url of saved recipe to user branch & recipe-specific info to recipe branch of database
     func writeSavedRecipe(id: String) {
         ref.child("recipes").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.hasChildren() {
@@ -177,6 +192,7 @@ class RecipeZoomViewController: ViewController, UITableViewDelegate, UITableView
         })
     }
     
+    // called when rate button is pressed (moves to rating controller)
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.

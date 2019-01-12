@@ -20,43 +20,50 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet var generalSearch: UIButton!
     @IBOutlet var displayedRecipes: UITableView!
     
-    var query: String = "chicken breast"
-    var from: Int = 0
-    var to: Int = 10
-    var ingr: Int = Int.max
-    var diet: String = ""
+    // search parameters
+    var query: String!
+    var from: Int!
+    var to: Int!
+    var ingr: Int!
+    var diet: String!
     var health: [String] = []
-    var calories: String = ""
-    var time: String = ""
+    var calories: String!
+    var time: String!
     var excluded: [String] = []
     
-    let appId: String = "a4c5cb52"
-    let appKey: String = "2df4ac35c025f1afe9ae4123fea86d63"
+    // access keys for Edamam's Recipe API
+    private let appId: String = ApiKeys.getEdamamRecipeAppId()
+    private let appKey: String = ApiKeys.getEdamamRecipeAppKey()
     
-    var finalRecipes: [Recipe] = []
+    private let padding: CGFloat = 10.0
+    
+    // stores list of recipes that will be displayed in the tableview
+    private var finalRecipes: [Recipe] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats title label
         self.exploreRecipesLabel.text = "Explore Recipes"
         self.exploreRecipesLabel.textColor = ColorScheme.red
         self.exploreRecipesLabel.font = ColorScheme.cochinItalic50
         
-        let padding: CGFloat = 10.0
-        
+        // formats photo recipe search button
         photoRecipe.titleLabel!.font = ColorScheme.pingFang18
         photoRecipe.setTitleColor(ColorScheme.black, for: .normal)
         photoRecipe.backgroundColor = ColorScheme.green
         photoRecipe.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         photoRecipe.layer.cornerRadius = padding
         
+        // formats pantry search button
         searchByIngred.titleLabel!.font = ColorScheme.pingFang18
         searchByIngred.setTitleColor(ColorScheme.black, for: .normal)
         searchByIngred.backgroundColor = ColorScheme.pink
         searchByIngred.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         searchByIngred.layer.cornerRadius = padding
         
+        // formats general search button
         generalSearch.titleLabel!.font = ColorScheme.pingFang18
         generalSearch.setTitleColor(ColorScheme.black, for: .normal)
         generalSearch.backgroundColor = ColorScheme.yellow
@@ -70,7 +77,9 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         self.displayedRecipes.delegate = self
         self.displayedRecipes.dataSource = self
         
+        // populates list of recipes to be displayed
         self.createRecipeList()
+        
         self.displayedRecipes.rowHeight = UITableView.automaticDimension
         self.displayedRecipes.estimatedRowHeight = 100.0
     }
@@ -86,12 +95,15 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = displayedRecipes.dequeueReusableCell(withIdentifier: "recipe", for: indexPath) as! RecipeTableViewCell
         let currRecipe = self.finalRecipes[indexPath.row]
+        
         cell.recipe = currRecipe
         
+        // format recipe name label
         let entry: String = currRecipe.getLabel()
         cell.recipeName.text = entry
         cell.recipeName.font = ColorScheme.pingFang20
         
+        // format recipe image
         let stringUrl: String = currRecipe.getImgUrl()
         let url = URL(string: stringUrl)
         
@@ -101,9 +113,11 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         cell.previewImg.layer.masksToBounds = true
         cell.previewImg.layer.cornerRadius = 7.0
         
+        // format preparation time label
         cell.timeToPrepare.text = String(Int(round(currRecipe.getTotalTime()))) + " min"
         cell.timeToPrepare.font = ColorScheme.pingFang18
         
+        // format calories label
         cell.calories.text = String(Int(round(currRecipe.getCalories()))) + " cal"
         cell.calories.font = ColorScheme.pingFang18
         
@@ -117,53 +131,65 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
+    // access Edamam Recipe API data using generated query from parameters
     func accessPage(completionHandler: @escaping ([Recipe]) -> Void) {
-//        let finalUrl: String = genUrl()
-//        print(finalUrl)
-//        let finalUrl: String = "https://api.myjson.com/bins/bd01c"
-        let finalUrl: String = "https://api.myjson.com/bins/ic8sg"
+        let finalUrl: String = genUrl()
+        if finalUrl == "" {
+            completionHandler([])
+        }
         var allRecipes: [Recipe] = []
         AF.request(finalUrl).responseJSON { response in
             if let result = response.result.value {
                 let json = JSON(result)
                 let currPageData = json["hits"]
                 var newRecipe: Recipe
+                
+                if self.query == nil {
+                    completionHandler([])
+                } else {
+                    for recipe in self.from...self.to - 1 {
+                        var currRecipe = currPageData[recipe]["recipe"]
 
-                for recipe in self.from...self.to - 1 {
-                    var currRecipe = currPageData[recipe]["recipe"]
+                        var allIngreds: [Ingredient] = []
+                        var currIngred: [String: Any]
 
-                    var allIngreds: [Ingredient] = []
-                    var currIngred: [String: Any]
+                        for ingred in currRecipe["ingredients"].arrayObject! {
+                            currIngred = ingred as! [String: Any]
+                            allIngreds.append(Ingredient(food: currIngred["text"] as! String, weight: (currIngred["weight"] as? NSNumber)?.floatValue ?? 0))
+                        }
 
-                    for ingred in currRecipe["ingredients"].arrayObject! {
-                        currIngred = ingred as! [String: Any]
-                        allIngreds.append(Ingredient(food: currIngred["text"] as! String, weight: (currIngred["weight"] as? NSNumber)?.floatValue ?? 0))
+                        // for every match, creates a new Recipe object for easier manipulation
+                        newRecipe = Recipe(
+                            label: currRecipe["label"].string!,
+                            imgUrl: currRecipe["image"].string!,
+                            source: currRecipe["source"].string!,
+                            yield: currRecipe["yield"].float!,
+                            calories: currRecipe["calories"].float!,
+                            totalTime: currRecipe["totalTime"].float!,
+                            totalWeight: currRecipe["totalWeight"].float!,
+                            ingredients: allIngreds,
+                            totalNutrients: [],
+                            totalDaily: [],
+                            dietLabels: currRecipe["dietLabels"].arrayObject as! [String],
+                            healthLabels: currRecipe["healthLabels"].arrayObject as! [String],
+                            url: currRecipe["url"].string!
+                        )
+                        allRecipes.append(newRecipe)
                     }
-
-                    newRecipe = Recipe(
-                        label: currRecipe["label"].string!,
-                        imgUrl: currRecipe["image"].string!,
-                        source: currRecipe["source"].string!,
-                        yield: currRecipe["yield"].float!,
-                        calories: currRecipe["calories"].float!,
-                        totalTime: currRecipe["totalTime"].float!,
-                        totalWeight: currRecipe["totalWeight"].float!,
-                        ingredients: allIngreds,
-                        totalNutrients: [],
-                        totalDaily: [],
-                        dietLabels: currRecipe["dietLabels"].arrayObject as! [String],
-                        healthLabels: currRecipe["healthLabels"].arrayObject as! [String],
-                        url: currRecipe["url"].string!
-                    )
-                    allRecipes.append(newRecipe)
+                    completionHandler(allRecipes)
                 }
-                completionHandler(allRecipes)
             }
         }
     }
     
+    // generates url from paramter values of controller
     func genUrl() -> String {
         var url: String = "https://api.edamam.com/search?q="
+        
+        if self.query == nil {
+            return ""
+        }
+        
         let componentList = self.query.components(separatedBy: " ")
         var counter = 0
         
@@ -212,6 +238,7 @@ class SearchRecipesViewController: UIViewController, UITableViewDelegate, UITabl
         return url
     }
     
+    // segues to recipe zoom view when a recipe cell is pressed
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "zoomRecipe" {
             let zoomedRecipe: RecipeZoomViewController = segue.destination as! RecipeZoomViewController

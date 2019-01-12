@@ -42,19 +42,23 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
     
     @IBOutlet var dietPicker: UIPickerView!
     
-    let dietPickerData: [String] = ["none", "balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
+    private let padding: CGFloat = 7.0
+    private let borderRadius: CGFloat = 5.0
+    
+    // populates diet picker with possible diet options
+    private let dietPickerData: [String] = ["none", "balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
+    
     var query: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats go back button
         goBack.setTitle("", for: .normal)
         goBack.setBackgroundImage(UIImage(named: "back-button.png"), for: .normal)
         
-        let padding: CGFloat = 7.0
-        let borderRadius: CGFloat = 5.0
-        
+        // formates general search button
         generalSearch.setTitle("Search", for: .normal)
         generalSearch.backgroundColor = ColorScheme.yellow
         generalSearch.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
@@ -62,10 +66,12 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         generalSearch.titleLabel!.font = ColorScheme.pingFang24
         generalSearch.setTitleColor(ColorScheme.black, for: .normal)
         
+        // formats title label
         generalSearchLabel.text = "General Search"
         generalSearchLabel.textColor = ColorScheme.red
         generalSearchLabel.font = ColorScheme.cochinItalic50
         
+        // formats query label & field
         queryLabel.text = "Query"
         queryLabel.font = ColorScheme.pingFang18b
         queryField.font = ColorScheme.pingFang18
@@ -73,46 +79,58 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
             queryField.text = query
         }
         
+        // formats ranking label
         rankingLabel.text = "Ranking"
         rankingLabel.font = ColorScheme.pingFang18b
         
+        // formats ranking lower bound label
         fromLabel.text = "From"
         fromLabel.font = ColorScheme.pingFang18
         minRankField.font = ColorScheme.pingFang18
         
+        // formats ranking higher bound label
         toLabel.text = "To"
         toLabel.font = ColorScheme.pingFang18
         maxRankField.font = ColorScheme.pingFang18
         
+        // formats max num ingredients label
         maxIngredientsLabel.text = "Max Ingredients"
         maxIngredientsLabel.font = ColorScheme.pingFang18b
         maxIngredientsField.font = ColorScheme.pingFang18
         
+        // formats diet label
         dietLabel.text = "Diet"
         dietLabel.font = ColorScheme.pingFang18b
         
+        // formats time of preparation label
         timeLabel.text = "Time (min)"
         timeLabel.font = ColorScheme.pingFang18b
         
+        // formats time lower bound label
         minTimeLabel.text = "Min"
         minTimeLabel.font = ColorScheme.pingFang18
         minTimeField.font = ColorScheme.pingFang18
         
+        // formats time upper bound label
         maxTimeLabel.text = "Max"
         maxTimeLabel.font = ColorScheme.pingFang18
         maxTimeField.font = ColorScheme.pingFang18
         
+        // formats calories label
         caloriesLabel.text = "Calories"
         caloriesLabel.font = ColorScheme.pingFang18b
         
+        // formats calories lower bound label
         minCalLabel.text = "Min"
         minCalLabel.font = ColorScheme.pingFang18
         minCalField.font = ColorScheme.pingFang18
         
+        // formats calories upper bound label
         maxCalLabel.text = "Max"
         maxCalLabel.font = ColorScheme.pingFang18
         maxCalField.font = ColorScheme.pingFang18
         
+        // formats excluded ingredients label
         excludedLabel.text = "Excluded"
         excludedLabel.font = ColorScheme.pingFang18b
         excludedField.font = ColorScheme.pingFang18
@@ -120,6 +138,7 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         self.dietPicker.delegate = self
         self.dietPicker.dataSource = self
         
+        // prevents keyboard from blocking lowermost fields
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
@@ -144,6 +163,7 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         scrollView.contentInset = contentInset
     }
     
+    // pickerview methods for the diet picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -161,15 +181,16 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         return label
     }
     
+    // go the next view controller to view search recipe results
     @IBAction func seeSearchResults(_ sender: Any) {
         performSegue(withIdentifier: "generalSearchResults", sender: sender)
     }
     
+    // sends form data to next controller via segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "generalSearchResults" {
-//            let newSearch: SearchRecipesViewController = (segue.destination as! UINavigationController).topViewController as! SearchRecipesViewController
             let newSearch: SearchRecipesViewController = segue.destination as! SearchRecipesViewController
             
             let query: String = queryField.text ?? ""
@@ -254,10 +275,12 @@ class GeneralSearchViewController: ViewController, UIPickerViewDelegate, UIPicke
         }
     }
     
+    // checks to see if a string can be converted to an int
     func isStringAnInt(string: String) -> Bool {
         return Int(string) != nil
     }
     
+    // checks to see if a string can be converted to a boolean
     func isStringAFloat(string: String) -> Bool {
         return Float(string) != nil
     }

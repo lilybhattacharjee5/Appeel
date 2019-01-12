@@ -24,26 +24,35 @@ class SignupViewController: UIViewController {
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var backButton: UIButton!
     
-    var ref: DatabaseReference!
+    private let borderRadius: CGFloat = 10.0
+    private let padding: CGFloat = 20.0
+    
+    // firebase database reference
+    private var ref: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // setup label names
         signupLabel.text = "Signup"
         firstNameLabel.text = "First Name"
         lastNameLabel.text = "Last Name"
         emailLabel.text = "Email"
         passwordLabel.text = "Password"
         
+        // setup button formatting
         signupButton.setTitle("Sign Up", for: .normal)
         backButton.setTitle("", for: .normal)
         backButton.setImage(PageViewController.backButtonImg, for: .normal)
         
+        // password text will be obscured
         passwordTextField.isSecureTextEntry = true
         
+        // initializes database reference
         ref = Database.database().reference()
         
+        // formats all text labels
         signupLabel.font = ColorScheme.cochinItalic60
         signupLabel.textColor = ColorScheme.red
         
@@ -52,23 +61,24 @@ class SignupViewController: UIViewController {
         emailLabel.font = ColorScheme.pingFang20
         passwordLabel.font = ColorScheme.pingFang20
         
+        // formats all text fields
         firstNameTextField.font = ColorScheme.pingFang18
         lastNameTextField.font = ColorScheme.pingFang18
         emailTextField.font = ColorScheme.pingFang18
         passwordTextField.font = ColorScheme.pingFang18
         
-        let borderRadius: CGFloat = 10.0
-        let padding: CGFloat = 20.0
-        
+        // formats all buttons
         signupButton.backgroundColor = ColorScheme.pink
         signupButton.contentEdgeInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         signupButton.layer.cornerRadius = borderRadius
         signupButton.titleLabel!.font = ColorScheme.pingFang24
         signupButton.setTitleColor(ColorScheme.black, for: .normal)
         
+        // allows user to tap to make the keyboard disappear
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
+    // signs the user up if they don't already have an account using firebase email / password authentication
     @IBAction func signUp(_ sender: Any) {
         guard let email: String = emailTextField.text else { return }
         guard let password: String = passwordTextField.text else { return }

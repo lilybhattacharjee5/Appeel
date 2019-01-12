@@ -8,21 +8,39 @@
 
 import UIKit
 
+// about / info page for the app
 class AboutViewController: UIViewController {
 
     @IBOutlet var aboutLabel: UILabel!
     @IBOutlet var backButton: UIButton!
+    @IBOutlet var aboutText: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // formats title label
         aboutLabel.text = "About"
+        aboutLabel.font = ColorScheme.cochinItalic60
+        aboutLabel.textColor = ColorScheme.red
+        
+        // formats back button
         backButton.setTitle("", for: .normal)
         backButton.setImage(PageViewController.backButtonImg, for: .normal)
         
-        aboutLabel.font = ColorScheme.cochinItalic60
-        aboutLabel.textColor = ColorScheme.red
+        // formats about text label
+        aboutText.text = """
+        This app was created by Lily Bhattacharjee, a current sophomore at UC Berkeley, as a side project to more deeply explore iOS development and integrating various APIs with data analysis and account / system design. Technologies / APIs used freely during the creation of this app include the following: \n
+        \u{2022} Google Firebase Database, Core, Authentication, Storage, UI\n
+        \u{2022} SwiftyJSON\n
+        \u{2022} Alamofire\n
+        \u{2022} Kingfisher\n
+        \u{2022} Clarifai API\n
+        \u{2022} Edamam Food, Recipe APIs
+        \u{2022} Cosmos Star Ratings\n
+        \u{2022} iOS Charts + ChartsRealm\n
+        """
+        aboutText.font = ColorScheme.pingFang18
     }
     
     
