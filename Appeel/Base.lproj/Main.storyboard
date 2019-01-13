@@ -34,7 +34,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ody-fO-3ig">
-                                <rect key="frame" x="20" y="250" width="335" height="30"/>
+                                <rect key="frame" x="20" y="240" width="335" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="signUpSegue:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ljr-cf-WR4"/>
@@ -42,7 +42,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGg-1s-2Wg">
-                                <rect key="frame" x="20" y="310" width="335" height="30"/>
+                                <rect key="frame" x="20" y="290" width="335" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="aboutSegue:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OQ8-PW-OF5"/>
@@ -56,7 +56,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ody-fO-3ig" firstAttribute="centerX" secondItem="cpL-zh-gEG" secondAttribute="centerX" id="1cV-9Q-ddd"/>
-                            <constraint firstItem="tGg-1s-2Wg" firstAttribute="top" secondItem="ody-fO-3ig" secondAttribute="bottom" constant="30" id="5sI-5c-3vL"/>
+                            <constraint firstItem="tGg-1s-2Wg" firstAttribute="top" secondItem="ody-fO-3ig" secondAttribute="bottom" constant="20" id="5sI-5c-3vL"/>
                             <constraint firstItem="Tnc-07-PWv" firstAttribute="centerX" secondItem="cpL-zh-gEG" secondAttribute="centerX" id="Odh-1t-mWd"/>
                             <constraint firstItem="qow-d2-XnV" firstAttribute="leading" secondItem="cpL-zh-gEG" secondAttribute="leading" constant="20" id="SgJ-Ps-Pdt"/>
                             <constraint firstItem="cpL-zh-gEG" firstAttribute="trailing" secondItem="qow-d2-XnV" secondAttribute="trailing" constant="20" id="UCB-Ml-XCU"/>
@@ -70,7 +70,7 @@
                             <constraint firstItem="cpL-zh-gEG" firstAttribute="trailing" secondItem="tGg-1s-2Wg" secondAttribute="trailing" constant="20" id="lad-CL-ydk"/>
                             <constraint firstItem="qow-d2-XnV" firstAttribute="top" secondItem="cpL-zh-gEG" secondAttribute="top" constant="170" id="ltA-jb-AIc"/>
                             <constraint firstItem="Tnc-07-PWv" firstAttribute="top" secondItem="2GX-TA-y5f" secondAttribute="bottom" constant="-15" id="n1h-PE-HlI"/>
-                            <constraint firstItem="ody-fO-3ig" firstAttribute="top" secondItem="qow-d2-XnV" secondAttribute="bottom" constant="30" id="ukK-YQ-Bkr"/>
+                            <constraint firstItem="ody-fO-3ig" firstAttribute="top" secondItem="qow-d2-XnV" secondAttribute="bottom" constant="20" id="ukK-YQ-Bkr"/>
                             <constraint firstItem="cpL-zh-gEG" firstAttribute="trailing" secondItem="ody-fO-3ig" secondAttribute="trailing" constant="20" id="vC4-ie-IUt"/>
                             <constraint firstItem="2GX-TA-y5f" firstAttribute="centerX" secondItem="cpL-zh-gEG" secondAttribute="centerX" id="wYK-JX-W8Z"/>
                         </constraints>
@@ -1333,7 +1333,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25G-EQ-R4U" customClass="CosmosView" customModule="Cosmos">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="25G-EQ-R4U" customClass="CosmosView" customModule="Cosmos">
                                 <rect key="frame" x="102" y="45" width="170" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -2170,6 +2170,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="f2Z-ay-mlc"/>
         <segue reference="y1Z-8a-dAp"/>
-        <segue reference="fnd-67-ZIb"/>
+        <segue reference="jIo-vb-5VL"/>
     </inferredMetricsTieBreakers>
 </document>
