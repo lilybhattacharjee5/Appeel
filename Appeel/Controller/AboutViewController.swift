@@ -35,8 +35,8 @@ class AboutViewController: UIViewController {
         \u{2022} SwiftyJSON\n
         \u{2022} Alamofire\n
         \u{2022} Kingfisher\n
-        \u{2022} Clarifai API\n
-        \u{2022} Edamam Food, Recipe APIs
+        \u{2022} Clarifai Food Recognition API\n
+        \u{2022} Edamam Food, Recipe APIs\n
         \u{2022} Cosmos Star Ratings\n
         \u{2022} iOS Charts + ChartsRealm\n
         """
