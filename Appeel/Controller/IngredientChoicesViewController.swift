@@ -17,7 +17,7 @@ class IngredientChoicesViewController: ViewController, UITableViewDelegate, UITa
     @IBOutlet var nextToGen: UIButton!
     
     private var ingredientChoicesData: [[String: Any]] = [] // helps populate ingredients table
-    private var selectedCells: [PhotoResultsTableViewCell] = [] // keeps track of selected cells
+    private var selectedCells: [String] = [] // keeps track of selected cells
     
     var imageData: UIImage! // stores image that the user uploads
     
@@ -73,16 +73,16 @@ class IngredientChoicesViewController: ViewController, UITableViewDelegate, UITa
     
     // colors the cell green if it has been selected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCell:UITableViewCell = ingredientChoices.cellForRow(at: indexPath as IndexPath)!
+        let selectedCell: PhotoResultsTableViewCell = ingredientChoices.cellForRow(at: indexPath as IndexPath) as! PhotoResultsTableViewCell
         selectedCell.contentView.backgroundColor = ColorScheme.green
-        selectedCells.append(selectedCell as! PhotoResultsTableViewCell)
+        selectedCells.append(selectedCell.conceptName.text!)
     }
     
     // makes the cell clear if it is deselected
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cellToDeSelect:UITableViewCell = ingredientChoices.cellForRow(at: indexPath)!
+        let cellToDeSelect:PhotoResultsTableViewCell = ingredientChoices.cellForRow(at: indexPath) as! PhotoResultsTableViewCell
         cellToDeSelect.contentView.backgroundColor = UIColor.clear
-        if let index = selectedCells.index(of: cellToDeSelect as! PhotoResultsTableViewCell) {
+        if let index = selectedCells.index(of: cellToDeSelect.conceptName.text!) {
             selectedCells.remove(at: index)
         }
     }
@@ -132,7 +132,7 @@ class IngredientChoicesViewController: ViewController, UITableViewDelegate, UITa
         var returnedQuery: String = ""
         var counter = 0
         for selectedCell in selectedCells {
-            let currVal = selectedCell.conceptName.text ?? ""
+            let currVal = selectedCell
             if counter < selectedCells.count - 1 {
                 if currVal != "" {
                     returnedQuery += (currVal + " ")

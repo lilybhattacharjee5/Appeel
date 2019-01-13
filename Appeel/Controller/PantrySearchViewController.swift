@@ -24,7 +24,7 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
     // firebase database reference
     private var userRef: DatabaseReference!
     
-    private var selectedCells: [PantrySearchTableViewCell] = [] // tracks selected pantry items
+    private var selectedCells: [String] = [] // tracks selected pantry items
     
     private let padding: CGFloat = 7.0
     private let borderRadius: CGFloat = 5.0
@@ -111,7 +111,7 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
         var returnedQuery: String = ""
         var counter = 0
         for selectedCell in selectedCells {
-            let currVal = selectedCell.label.text ?? ""
+            let currVal = selectedCell
             if counter < selectedCells.count - 1 {
                 if currVal != "" {
                     returnedQuery += (currVal + " ")
@@ -151,16 +151,16 @@ class PantrySearchViewController: ViewController, UITableViewDataSource, UITable
     
     // highlight cell in pink if selected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCell:UITableViewCell = pantrySearchItems.cellForRow(at: indexPath as IndexPath)!
+        let selectedCell: PantrySearchTableViewCell = pantrySearchItems.cellForRow(at: indexPath as IndexPath) as! PantrySearchTableViewCell
         selectedCell.contentView.backgroundColor = ColorScheme.pink
-        selectedCells.append(selectedCell as! PantrySearchTableViewCell)
+        selectedCells.append(selectedCell.label.text!)
     }
     
     // remove highlighting from cell if deselected
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cellToDeSelect:UITableViewCell = pantrySearchItems.cellForRow(at: indexPath)!
+        let cellToDeSelect: PantrySearchTableViewCell = pantrySearchItems.cellForRow(at: indexPath) as! PantrySearchTableViewCell
         cellToDeSelect.contentView.backgroundColor = UIColor.clear
-        if let index = selectedCells.index(of: cellToDeSelect as! PantrySearchTableViewCell) {
+        if let index = selectedCells.index(of: cellToDeSelect.label.text!) {
             selectedCells.remove(at: index)
         }
     }
